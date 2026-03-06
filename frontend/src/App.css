@@ -1,34 +1,103 @@
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
+/* Custom animations and utility classes */
+
+.font-playfair {
+    font-family: 'Playfair Display', serif;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
+.font-manrope {
+    font-family: 'Manrope', sans-serif;
 }
 
-.App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+.font-outfit {
+    font-family: 'Outfit', sans-serif;
 }
 
-.App-link {
-    color: #61dafb;
+/* Glass morphism */
+.glass {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-@keyframes App-logo-spin {
+.glass-dark {
+    background: rgba(30, 58, 138, 0.9);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+/* Hero overlay */
+.hero-overlay {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.55) 100%);
+}
+
+/* Vehicle card hover */
+.vehicle-card-image {
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.vehicle-card:hover .vehicle-card-image {
+    transform: scale(1.08);
+}
+
+/* Floating shadow animation */
+@keyframes float-shadow {
+    0%, 100% { box-shadow: 0 8px 30px rgba(0,0,0,0.04); }
+    50% { box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+}
+
+/* Fade in animation */
+@keyframes fadeInUp {
     from {
-        transform: rotate(0deg);
+        opacity: 0;
+        transform: translateY(20px);
     }
     to {
-        transform: rotate(360deg);
+        opacity: 1;
+        transform: translateY(0);
     }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Price tag styling */
+.price-tag {
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    color: white;
+    font-weight: 700;
+}
+
+/* Ticket style divider */
+.ticket-divider {
+    border-top: 2px dashed #E2E8F0;
+    position: relative;
+}
+
+.ticket-divider::before,
+.ticket-divider::after {
+    content: '';
+    position: absolute;
+    top: -12px;
+    width: 24px;
+    height: 24px;
+    background: #F8FAFC;
+    border-radius: 50%;
+}
+
+.ticket-divider::before {
+    left: -28px;
+}
+
+.ticket-divider::after {
+    right: -28px;
+}
+
+/* Section wave separator */
+.section-accent-line {
+    width: 60px;
+    height: 4px;
+    background: #F59E0B;
+    border-radius: 2px;
 }
