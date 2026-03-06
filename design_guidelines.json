@@ -1,0 +1,162 @@
+{
+  "metadata": {
+    "app_name": "LuxTravel",
+    "theme": "light",
+    "design_archetype": "The Performance Pro (Luxury Travel Edition)",
+    "vibe": "Premium, Seamless, Spacious, Trustworthy",
+    "target_audience": "Premium travelers in India, Corporate clients, International tourists"
+  },
+  "layout_strategy": {
+    "container": {
+      "max_width": "max-w-7xl",
+      "padding": "px-6 md:px-12 lg:px-20",
+      "center_alignment": "mx-auto"
+    },
+    "spacing": {
+      "section_gap": "gap-20 md:gap-32",
+      "component_gap": "gap-8",
+      "internal_padding": "p-8 md:p-10"
+    },
+    "grid_system": {
+      "bento_grid": "grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6",
+      "vehicle_grid": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8",
+      "feature_grid": "grid grid-cols-1 md:grid-cols-3 gap-12"
+    }
+  },
+  "typography": {
+    "font_family": {
+      "heading": "Playfair Display, serif",
+      "body": "Manrope, sans-serif",
+      "accent": "Outfit, sans-serif"
+    },
+    "scale": {
+      "hero_title": "text-5xl md:text-7xl font-bold tracking-tight leading-[1.1]",
+      "section_title": "text-3xl md:text-5xl font-semibold text-primary",
+      "card_title": "text-2xl font-bold text-gray-900",
+      "body_text": "text-base md:text-lg text-gray-600 leading-relaxed",
+      "small_label": "text-sm font-medium tracking-widest uppercase text-gray-500"
+    }
+  },
+  "colors": {
+    "primary": {
+      "DEFAULT": "#1E3A8A",
+      "foreground": "#FFFFFF",
+      "description": "Deep Royal Blue - Use for primary actions, solid backgrounds, and footer"
+    },
+    "secondary": {
+      "DEFAULT": "#F59E0B",
+      "foreground": "#FFFFFF",
+      "description": "Luxury Gold - Use for 'Book Now', price highlights, and rating stars"
+    },
+    "accent": {
+      "DEFAULT": "#3B82F6",
+      "foreground": "#FFFFFF",
+      "description": "Bright Blue - Use for active states, links, and icons"
+    },
+    "background": {
+      "DEFAULT": "#F8FAFC",
+      "paper": "#FFFFFF",
+      "subtle": "#F1F5F9"
+    },
+    "text": {
+      "main": "#0F172A",
+      "muted": "#64748B",
+      "inverted": "#FFFFFF"
+    }
+  },
+  "visual_enhancers": {
+    "shadows": {
+      "card": "shadow-[0_8px_30px_rgb(0,0,0,0.04)]",
+      "floating": "shadow-[0_20px_50px_rgb(0,0,0,0.1)]",
+      "hover": "hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 ease-out"
+    },
+    "borders": {
+      "subtle": "border border-gray-100",
+      "active": "border-primary/20",
+      "radius": "rounded-3xl"
+    },
+    "glassmorphism": {
+      "nav": "bg-white/80 backdrop-blur-md border-b border-white/20",
+      "overlay": "bg-black/30 backdrop-blur-sm"
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-primary text-white rounded-full px-8 py-4 font-semibold hover:bg-primary/90 hover:scale-105 transition-all shadow-lg shadow-primary/20",
+      "secondary": "bg-white text-primary border border-gray-200 rounded-full px-8 py-4 font-semibold hover:bg-gray-50 transition-all",
+      "cta": "bg-secondary text-white rounded-full px-10 py-5 text-lg font-bold hover:bg-secondary/90 shadow-xl shadow-secondary/20"
+    },
+    "cards": {
+      "vehicle": "group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-primary/10 transition-all duration-500 shadow-sm hover:shadow-2xl relative",
+      "feature": "bg-slate-50 rounded-2xl p-8 hover:bg-white transition-all hover:shadow-lg border border-transparent hover:border-gray-100"
+    },
+    "inputs": {
+      "search": "h-14 bg-white border-0 ring-1 ring-gray-100 focus:ring-2 focus:ring-primary/20 rounded-2xl px-6 text-lg shadow-sm"
+    }
+  },
+  "image_urls": {
+    "hero_bg": "https://images.unsplash.com/photo-1758216383800-7023ee8ed42b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODl8MHwxfHNlYXJjaHw0fHxsdXh1cnklMjBzZWRhbiUyMGNhciUyMHdoaXRlfGVufDB8fHx8MTc3MjgwMzI4Mnww&ixlib=rb-4.1.0&q=85",
+    "vehicles": {
+      "sedan": "https://images.unsplash.com/photo-1758179128122-6079c9cb3e4e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODl8MHwxfHNlYXJjaHwzfHxsdXh1cnklMjBzZWRhbiUyMGNhciUyMHdoaXRlfGVufDB8fHx8MTc3MjgwMzI4Mnww&ixlib=rb-4.1.0&q=85",
+      "suv": "https://images.unsplash.com/photo-1762195340046-415140d8b1b2?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1MTN8MHwxfHNlYXJjaHwyfHxsdXh1cnklMjB3aGl0ZSUyMHN1diUyMGNhciUyMHN0dWRpb3xlbnwwfHx8fDE3NzI4MDMyODF8MA&ixlib=rb-4.1.0&q=85",
+      "luxury_van": "https://images.unsplash.com/photo-1554050767-0c512ab917ff?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NjV8MHwxfHNlYXJjaHwxfHxtZXJjZWRlcyUyMHNwcmludGVyJTIwdmFuJTIwZXh0ZXJpb3J8ZW58MHx8fHwxNzcyODAzMjgzfDA&ixlib=rb-4.1.0&q=85",
+      "bus": "https://images.unsplash.com/photo-1626448167527-33aec453f913?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1MTN8MHwxfHNlYXJjaHw0fHxsdXh1cnklMjB0b3VyJTIwYnVzJTIwY29hY2h8ZW58MHx8fHwxNzcyODAzMjg0fDA&ixlib=rb-4.1.0&q=85"
+    },
+    "destinations": {
+      "taj_mahal": "https://images.unsplash.com/photo-1564507592333-c60657eea523?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzV8MHwxfHNlYXJjaHwxfHx0YWolMjBtYWhhbCUyMGFncmElMjBpbmRpYXxlbnwwfHx8fDE3NzI4MDMyODV8MA&ixlib=rb-4.1.0&q=85",
+      "kerala": "https://images.unsplash.com/photo-1766051224978-a57732014f9a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHw0fHxrZXJhbGElMjBiYWNrd2F0ZXJzJTIwaG91c2Vib2F0fGVufDB8fHx8MTc3MjgwMzI4Nnww&ixlib=rb-4.1.0&q=85",
+      "goa": "https://images.unsplash.com/photo-1707893013488-51672ef83425?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHwxfHxrZXJhbGElMjBiYWNrd2F0ZXJzJTIwaG91c2Vib2F0fGVufDB8fHx8MTc3MjgwMzI4Nnww&ixlib=rb-4.1.0&q=85"
+    }
+  },
+  "page_specific_guidelines": {
+    "hero_section": {
+      "layout": "Full viewport height (min-h-[90vh])",
+      "elements": [
+        "Cinematic background image with overlay gradient (from black/50 to transparent)",
+        "Floating Glass Search Bar centered at bottom third",
+        "Large Heading with Playfair Display font",
+        "Subheading with Manrope font"
+      ],
+      "search_bar": "Airbnb-style pill shape, divided into 'Vehicle Type', 'Pick Up', 'Drop Off', 'Date'. Button is circular/pill on right."
+    },
+    "vehicle_grid": {
+      "card_style": "Minimalist. Large image (aspect-video). Title and Price prominent. Specs (Seats, AC, Fuel) as small icons with text. 'Book Now' button visible on hover or always visible in mobile.",
+      "filters": "Sidebar or Horizontal sticky bar. Clean checkboxes and range sliders."
+    },
+    "quote_page": {
+      "layout": "Split view. Left side: Form/Details. Right side: Price Breakdown (Sticky).",
+      "breakdown_card": "Ticket-style visual. Dotted line separator between Total and Breakdown."
+    }
+  },
+  "animation_guidelines": {
+    "library": "framer-motion",
+    "patterns": [
+      "Stagger children for lists (0.1s delay)",
+      "Fade up for sections (y: 20 -> 0, opacity: 0 -> 1)",
+      "Scale up for buttons on hover (scale: 1.05)",
+      "Parallax effect on hero background"
+    ]
+  },
+  "instructions_to_main_agent": [
+    "Install 'lucide-react' for icons.",
+    "Use 'framer-motion' for all entrance animations.",
+    "Ensure 'Manrope' and 'Playfair Display' are imported from Google Fonts.",
+    "Do not use default Shadcn cards for vehicles; build a custom component with the 'group' class for hover effects.",
+    "Implement the 'WhatsApp' floating button fixed at bottom-right with z-50.",
+    "Use the provided image URLs strictly. Do not use placeholders.",
+    "For the Distance Calculator, mock the Google Maps API response if no key is provided, but build the UI to support it."
+  ],
+  "UNIVERSAL_GUIDELINES": {
+    "DO_NOT": [
+      "Use gradients for text.",
+      "Center align long paragraphs.",
+      "Use 'Inter' font for headings.",
+      "Use pure black (#000000) - use #0F172A instead."
+    ],
+    "MUST": [
+      "Add 'data-testid' to all interactive elements.",
+      "Ensure mobile responsiveness (stack grids to col-1).",
+      "Use generous padding (py-20 for sections)."
+    ]
+  }
+}
