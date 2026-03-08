@@ -5,6 +5,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 import httpx
+import certifi
 from pathlib import Path
 from pydantic import BaseModel, Field
 from typing import List, Optional
@@ -16,7 +17,7 @@ load_dotenv(ROOT_DIR / '.env')
 
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
+client = AsyncIOMotorClient(mongo_url, tlsCAFile=certifi.where())
 db = client[os.environ['DB_NAME']]
 
 # Google Maps API key
@@ -305,108 +306,121 @@ VEHICLES_DATA = [
 
 
 # ============ HELPER FUNCTIONS ============
-async def get_distance_from_google(origin: str, destination: str) -> dict:
-    """Call Google Maps Distance Matrix API to get distance and duration."""
 
-    # Common Indian route distances (comprehensive fallback data in km)
-    COMMON_ROUTES = {
-        # Bangalore routes
-        ("bangalore", "mysore"): 150, ("bangalore", "mysuru"): 150,
-        ("bangalore", "chennai"): 350, ("bangalore", "hyderabad"): 570,
-        ("bangalore", "goa"): 560, ("bangalore", "ooty"): 270,
-        ("bangalore", "coorg"): 265, ("bangalore", "pondicherry"): 310,
-        ("bangalore", "mumbai"): 980, ("bangalore", "pune"): 840,
-        ("bangalore", "kochi"): 560, ("bangalore", "cochin"): 560,
-        ("bangalore", "trivandrum"): 730, ("bangalore", "thiruvananthapuram"): 730,
-        ("bangalore", "mangalore"): 350, ("bangalore", "tirupati"): 250,
-        ("bangalore", "madurai"): 440, ("bangalore", "coimbatore"): 365,
-        ("bangalore", "hampi"): 340, ("bangalore", "wayanad"): 280,
-        ("bangalore", "delhi"): 2150, ("bangalore", "new delhi"): 2150,
-        ("bangalore", "jaipur"): 1850, ("bangalore", "rajasthan"): 1850,
-        ("bangalore", "agra"): 2000, ("bangalore", "kolkata"): 1870,
-        ("bangalore", "ahmedabad"): 1500, ("bangalore", "lucknow"): 2000,
-        ("bangalore", "bhopal"): 1450, ("bangalore", "nagpur"): 1100,
-        ("bangalore", "vizag"): 800, ("bangalore", "visakhapatnam"): 800,
-        ("bangalore", "vijayawada"): 660, ("bangalore", "hubli"): 420,
-        ("bangalore", "belgaum"): 500, ("bangalore", "shimoga"): 300,
-        ("bangalore", "hassan"): 190, ("bangalore", "chikmagalur"): 250,
-        ("bangalore", "nandi hills"): 60, ("bangalore", "pondicherry"): 310,
-        ("bengaluru", "mysore"): 150, ("bengaluru", "mysuru"): 150,
-        ("bengaluru", "chennai"): 350, ("bengaluru", "rajasthan"): 1850,
-        ("bengaluru", "jaipur"): 1850, ("bengaluru", "delhi"): 2150,
-        # Delhi routes
-        ("delhi", "agra"): 230, ("delhi", "jaipur"): 280,
-        ("delhi", "chandigarh"): 250, ("delhi", "shimla"): 350,
-        ("delhi", "manali"): 540, ("delhi", "haridwar"): 220,
-        ("delhi", "rishikesh"): 240, ("delhi", "amritsar"): 450,
-        ("delhi", "lucknow"): 550, ("delhi", "varanasi"): 800,
-        ("delhi", "dehradun"): 240, ("delhi", "mussoorie"): 280,
-        ("delhi", "nainital"): 300, ("delhi", "jim corbett"): 250,
-        ("delhi", "mathura"): 180, ("delhi", "vrindavan"): 160,
-        ("delhi", "rajasthan"): 280, ("delhi", "mumbai"): 1400,
-        ("delhi", "kolkata"): 1500, ("delhi", "chennai"): 2180,
-        ("delhi", "hyderabad"): 1550, ("delhi", "pune"): 1400,
-        ("delhi", "goa"): 1900, ("delhi", "ahmedabad"): 950,
-        ("delhi", "udaipur"): 660, ("delhi", "jodhpur"): 590,
-        ("delhi", "jaisalmer"): 780, ("delhi", "mcleodganj"): 480,
-        ("new delhi", "agra"): 230, ("new delhi", "jaipur"): 280,
-        # Mumbai routes
-        ("mumbai", "pune"): 150, ("mumbai", "goa"): 590,
-        ("mumbai", "nashik"): 170, ("mumbai", "lonavala"): 85,
-        ("mumbai", "shirdi"): 250, ("mumbai", "mahabaleshwar"): 260,
-        ("mumbai", "aurangabad"): 330, ("mumbai", "ahmedabad"): 530,
-        ("mumbai", "surat"): 280, ("mumbai", "kolhapur"): 380,
-        ("mumbai", "bangalore"): 980, ("mumbai", "hyderabad"): 710,
-        ("mumbai", "delhi"): 1400, ("mumbai", "jaipur"): 1150,
-        ("mumbai", "rajasthan"): 1150, ("mumbai", "udaipur"): 800,
-        # Chennai routes
-        ("chennai", "pondicherry"): 150, ("chennai", "madurai"): 460,
-        ("chennai", "coimbatore"): 500, ("chennai", "trichy"): 330,
-        ("chennai", "tirupati"): 135, ("chennai", "kanchipuram"): 75,
-        ("chennai", "mahabalipuram"): 60, ("chennai", "ooty"): 570,
-        ("chennai", "bangalore"): 350, ("chennai", "hyderabad"): 630,
-        ("chennai", "mumbai"): 1340, ("chennai", "delhi"): 2180,
-        ("chennai", "kolkata"): 1670, ("chennai", "kochi"): 690,
-        # Hyderabad routes
-        ("hyderabad", "tirupati"): 560, ("hyderabad", "vijayawada"): 270,
-        ("hyderabad", "vizag"): 620, ("hyderabad", "nagpur"): 500,
-        ("hyderabad", "bidar"): 580, ("hyderabad", "warangal"): 150,
-        ("hyderabad", "bangalore"): 570, ("hyderabad", "chennai"): 630,
-        ("hyderabad", "mumbai"): 710, ("hyderabad", "pune"): 560,
-        ("hyderabad", "goa"): 650, ("hyderabad", "delhi"): 1550,
-        # Kolkata routes
-        ("kolkata", "darjeeling"): 615, ("kolkata", "digha"): 185,
-        ("kolkata", "puri"): 500, ("kolkata", "siliguri"): 560,
-        ("kolkata", "delhi"): 1500, ("kolkata", "mumbai"): 2050,
-        ("kolkata", "chennai"): 1670, ("kolkata", "bangalore"): 1870,
-        # Jaipur / Rajasthan routes
-        ("jaipur", "udaipur"): 395, ("jaipur", "jodhpur"): 330,
-        ("jaipur", "jaisalmer"): 560, ("jaipur", "pushkar"): 145,
-        ("jaipur", "ajmer"): 135, ("jaipur", "delhi"): 280,
-        ("jaipur", "agra"): 240, ("jaipur", "mumbai"): 1150,
-        ("rajasthan", "delhi"): 280, ("rajasthan", "mumbai"): 1150,
-        ("rajasthan", "bangalore"): 1850, ("rajasthan", "chennai"): 2080,
-        # Goa routes
-        ("goa", "mumbai"): 590, ("goa", "bangalore"): 560,
-        ("goa", "pune"): 450, ("goa", "hyderabad"): 650,
-        # Kerala routes
-        ("kochi", "munnar"): 130, ("kochi", "alleppey"): 55,
-        ("kochi", "trivandrum"): 200, ("kochi", "bangalore"): 560,
-        ("kerala", "bangalore"): 560, ("kerala", "chennai"): 690,
-    }
+# Common Indian route distances (comprehensive fallback data in km)
+COMMON_ROUTES = {
+    # Bangalore routes
+    ("bangalore", "mysore"): 150, ("bangalore", "mysuru"): 150,
+    ("bangalore", "chennai"): 350, ("bangalore", "hyderabad"): 570,
+    ("bangalore", "goa"): 560, ("bangalore", "ooty"): 270,
+    ("bangalore", "coorg"): 265, ("bangalore", "pondicherry"): 310,
+    ("bangalore", "mumbai"): 980, ("bangalore", "pune"): 840,
+    ("bangalore", "kochi"): 560, ("bangalore", "cochin"): 560,
+    ("bangalore", "trivandrum"): 730, ("bangalore", "thiruvananthapuram"): 730,
+    ("bangalore", "mangalore"): 350, ("bangalore", "tirupati"): 250,
+    ("bangalore", "madurai"): 440, ("bangalore", "coimbatore"): 365,
+    ("bangalore", "hampi"): 340, ("bangalore", "wayanad"): 280,
+    ("bangalore", "delhi"): 2150, ("bangalore", "new delhi"): 2150,
+    ("bangalore", "jaipur"): 1850, ("bangalore", "rajasthan"): 1850,
+    ("bangalore", "agra"): 2000, ("bangalore", "kolkata"): 1870,
+    ("bangalore", "ahmedabad"): 1500, ("bangalore", "lucknow"): 2000,
+    ("bangalore", "bhopal"): 1450, ("bangalore", "nagpur"): 1100,
+    ("bangalore", "vizag"): 800, ("bangalore", "visakhapatnam"): 800,
+    ("bangalore", "vijayawada"): 660, ("bangalore", "hubli"): 420,
+    ("bangalore", "belgaum"): 500, ("bangalore", "shimoga"): 300,
+    ("bangalore", "hassan"): 190, ("bangalore", "chikmagalur"): 250,
+    ("bangalore", "nandi hills"): 60, ("bangalore", "pondicherry"): 310,
+    ("bengaluru", "mysore"): 150, ("bengaluru", "mysuru"): 150,
+    ("bengaluru", "chennai"): 350, ("bengaluru", "rajasthan"): 1850,
+    ("bengaluru", "jaipur"): 1850, ("bengaluru", "delhi"): 2150,
+    # Delhi routes
+    ("delhi", "agra"): 230, ("delhi", "jaipur"): 280,
+    ("delhi", "chandigarh"): 250, ("delhi", "shimla"): 350,
+    ("delhi", "manali"): 540, ("delhi", "haridwar"): 220,
+    ("delhi", "rishikesh"): 240, ("delhi", "amritsar"): 450,
+    ("delhi", "lucknow"): 550, ("delhi", "varanasi"): 800,
+    ("delhi", "dehradun"): 240, ("delhi", "mussoorie"): 280,
+    ("delhi", "nainital"): 300, ("delhi", "jim corbett"): 250,
+    ("delhi", "mathura"): 180, ("delhi", "vrindavan"): 160,
+    ("delhi", "rajasthan"): 280, ("delhi", "mumbai"): 1400,
+    ("delhi", "kolkata"): 1500, ("delhi", "chennai"): 2180,
+    ("delhi", "hyderabad"): 1550, ("delhi", "pune"): 1400,
+    ("delhi", "goa"): 1900, ("delhi", "ahmedabad"): 950,
+    ("delhi", "udaipur"): 660, ("delhi", "jodhpur"): 590,
+    ("delhi", "jaisalmer"): 780, ("delhi", "mcleodganj"): 480,
+    ("new delhi", "agra"): 230, ("new delhi", "jaipur"): 280,
+    # Mumbai routes
+    ("mumbai", "pune"): 150, ("mumbai", "goa"): 590,
+    ("mumbai", "nashik"): 170, ("mumbai", "lonavala"): 85,
+    ("mumbai", "shirdi"): 250, ("mumbai", "mahabaleshwar"): 260,
+    ("mumbai", "aurangabad"): 330, ("mumbai", "ahmedabad"): 530,
+    ("mumbai", "surat"): 280, ("mumbai", "kolhapur"): 380,
+    ("mumbai", "bangalore"): 980, ("mumbai", "hyderabad"): 710,
+    ("mumbai", "delhi"): 1400, ("mumbai", "jaipur"): 1150,
+    ("mumbai", "rajasthan"): 1150, ("mumbai", "udaipur"): 800,
+    # Chennai routes
+    ("chennai", "pondicherry"): 150, ("chennai", "madurai"): 460,
+    ("chennai", "coimbatore"): 500, ("chennai", "trichy"): 330,
+    ("chennai", "tirupati"): 135, ("chennai", "kanchipuram"): 75,
+    ("chennai", "mahabalipuram"): 60, ("chennai", "ooty"): 570,
+    ("chennai", "bangalore"): 350, ("chennai", "hyderabad"): 630,
+    ("chennai", "mumbai"): 1340, ("chennai", "delhi"): 2180,
+    ("chennai", "kolkata"): 1670, ("chennai", "kochi"): 690,
+    # Hyderabad routes
+    ("hyderabad", "tirupati"): 560, ("hyderabad", "vijayawada"): 270,
+    ("hyderabad", "vizag"): 620, ("hyderabad", "nagpur"): 500,
+    ("hyderabad", "bidar"): 580, ("hyderabad", "warangal"): 150,
+    ("hyderabad", "bangalore"): 570, ("hyderabad", "chennai"): 630,
+    ("hyderabad", "mumbai"): 710, ("hyderabad", "pune"): 560,
+    ("hyderabad", "goa"): 650, ("hyderabad", "delhi"): 1550,
+    # Kolkata routes
+    ("kolkata", "darjeeling"): 615, ("kolkata", "digha"): 185,
+    ("kolkata", "puri"): 500, ("kolkata", "siliguri"): 560,
+    ("kolkata", "delhi"): 1500, ("kolkata", "mumbai"): 2050,
+    ("kolkata", "chennai"): 1670, ("kolkata", "bangalore"): 1870,
+    # Jaipur / Rajasthan routes
+    ("jaipur", "udaipur"): 395, ("jaipur", "jodhpur"): 330,
+    ("jaipur", "jaisalmer"): 560, ("jaipur", "pushkar"): 145,
+    ("jaipur", "ajmer"): 135, ("jaipur", "delhi"): 280,
+    ("jaipur", "agra"): 240, ("jaipur", "mumbai"): 1150,
+    ("rajasthan", "delhi"): 280, ("rajasthan", "mumbai"): 1150,
+    ("rajasthan", "bangalore"): 1850, ("rajasthan", "chennai"): 2080,
+    # Goa routes
+    ("goa", "mumbai"): 590, ("goa", "bangalore"): 560,
+    ("goa", "pune"): 450, ("goa", "hyderabad"): 650,
+    # Kerala routes
+    ("kochi", "munnar"): 130, ("kochi", "alleppey"): 55,
+    ("kochi", "trivandrum"): 200, ("kochi", "bangalore"): 560,
+    ("kerala", "bangalore"): 560, ("kerala", "chennai"): 690,
+}
 
-    def get_fallback_distance(orig, dest):
-        o = orig.lower().strip()
-        d = dest.lower().strip()
-        for (a, b), dist in COMMON_ROUTES.items():
-            if (a in o and b in d) or (b in o and a in d):
-                return dist
-        return 250  # Default fallback
 
+def _normalize_location(loc: str) -> str:
+    """Normalize a location string for cache key generation."""
+    return loc.lower().strip().replace(",", "").replace("  ", " ")
+
+
+def _make_cache_key(origin: str, destination: str) -> str:
+    """Create a consistent cache key (sorted so A->B == B->A)."""
+    a = _normalize_location(origin)
+    b = _normalize_location(destination)
+    return f"{min(a, b)}|{max(a, b)}"
+
+
+def _get_hardcoded_fallback(origin: str, destination: str) -> Optional[int]:
+    """Look up a route in the hardcoded COMMON_ROUTES dictionary."""
+    o = origin.lower().strip()
+    d = destination.lower().strip()
+    for (a, b), dist in COMMON_ROUTES.items():
+        if (a in o and b in d) or (b in o and a in d):
+            return dist
+    return None
+
+
+async def _fetch_from_google_api(origin: str, destination: str) -> Optional[dict]:
+    """Call Google Maps Distance Matrix API. Returns result dict or None on failure."""
     if not GOOGLE_API_KEY:
-        fb = get_fallback_distance(origin, destination)
-        logger.warning("No Google API Key configured, using fallback distance")
-        return {"distance_km": float(fb), "duration_text": f"~{int(fb/50)} hours (estimated)", "status": "FALLBACK"}
+        return None
 
     url = "https://maps.googleapis.com/maps/api/distancematrix/json"
     params = {
@@ -432,32 +446,93 @@ async def get_distance_from_google(origin: str, destination: str) -> dict:
                         "status": "OK"
                     }
                 else:
-                    logger.error(f"Element status: {element.get('status')}")
+                    logger.error(f"Google Maps element status: {element.get('status')} for {origin} -> {destination}")
             else:
-                logger.error(f"API status: {data.get('status')}, error: {data.get('error_message', '')}")
-
-        # Fallback for API failure
-        fb = get_fallback_distance(origin, destination)
-        return {"distance_km": float(fb), "duration_text": f"~{int(fb/50)} hours (estimated)", "status": "FALLBACK"}
+                logger.error(f"Google Maps API status: {data.get('status')}, error: {data.get('error_message', '')} for {origin} -> {destination}")
     except Exception as e:
-        logger.error(f"Google Maps API error: {e}")
-        fb = get_fallback_distance(origin, destination)
-        return {"distance_km": float(fb), "duration_text": f"~{int(fb/50)} hours (estimated)", "status": "FALLBACK"}
+        logger.error(f"Google Maps API exception for {origin} -> {destination}: {e}")
+
+    return None
+
+
+async def get_distance_from_google(origin: str, destination: str) -> dict:
+    """
+    Get distance between two locations using a 3-tier strategy:
+      1. Check MongoDB cache (distances collection)
+      2. Call Google Maps Distance Matrix API (and cache the result)
+      3. Fall back to hardcoded COMMON_ROUTES, then 250km default
+    """
+    cache_key = _make_cache_key(origin, destination)
+
+    # ── Tier 1: Check MongoDB cache ──
+    try:
+        cached = await db.distances.find_one({"cache_key": cache_key}, {"_id": 0})
+        if cached:
+            logger.info(f"Distance cache HIT for {origin} -> {destination}: {cached['distance_km']} km")
+            return {
+                "distance_km": cached["distance_km"],
+                "duration_text": cached.get("duration_text", ""),
+                "status": "CACHED"
+            }
+    except Exception as e:
+        logger.warning(f"MongoDB cache lookup failed: {e}")
+
+    # ── Tier 2: Google Maps API ──
+    google_result = await _fetch_from_google_api(origin, destination)
+    if google_result:
+        logger.info(f"Google Maps OK for {origin} -> {destination}: {google_result['distance_km']} km, {google_result['duration_text']}")
+        # Save to MongoDB cache for future lookups
+        try:
+            await db.distances.update_one(
+                {"cache_key": cache_key},
+                {"$set": {
+                    "cache_key": cache_key,
+                    "origin": origin,
+                    "destination": destination,
+                    "distance_km": google_result["distance_km"],
+                    "duration_text": google_result["duration_text"],
+                    "source": "google_maps",
+                    "fetched_at": datetime.now(timezone.utc).isoformat()
+                }},
+                upsert=True
+            )
+            logger.info(f"Cached distance for {origin} -> {destination} in MongoDB")
+        except Exception as e:
+            logger.warning(f"Failed to cache distance in MongoDB: {e}")
+        return google_result
+
+    # ── Tier 3: Hardcoded fallback ──
+    hardcoded = _get_hardcoded_fallback(origin, destination)
+    if hardcoded:
+        logger.warning(f"Using hardcoded fallback for {origin} -> {destination}: {hardcoded} km")
+        return {
+            "distance_km": float(hardcoded),
+            "duration_text": f"~{int(hardcoded / 50)} hours (estimated)",
+            "status": "FALLBACK"
+        }
+
+    # ── Last resort: 250km default ──
+    logger.warning(f"No distance data available for {origin} -> {destination}, using 250km default")
+    return {
+        "distance_km": 250.0,
+        "duration_text": "~5 hours (estimated)",
+        "status": "FALLBACK"
+    }
 
 
 def calculate_outstation_price(distance_km: float, pricing: dict, days: int) -> dict:
     """Calculate outstation (round trip) price."""
-    total_distance = distance_km * 2  # Round trip
+    total_distance = round(distance_km * 2, 1)  # Round trip
 
     if total_distance < pricing["min_km"]:
         total_distance = pricing["min_km"]
 
-    vehicle_cost = total_distance * pricing["outstation_km"]
+    vehicle_cost = round(total_distance * pricing["outstation_km"])
     driver_cost = pricing["driver_bata"] * days
     total_price = vehicle_cost + driver_cost
 
     return {
-        "distance_km": distance_km,
+        "distance_km": round(distance_km, 1),
         "total_distance_km": total_distance,
         "vehicle_cost": vehicle_cost,
         "driver_cost": driver_cost,
@@ -479,25 +554,25 @@ def calculate_local_price(distance_km: float, pricing: dict) -> dict:
     extra_km = 0
 
     if distance_km > 80:
-        extra_km = distance_km - 80
-        extra_km_cost = extra_km * pricing["extra_km"]
+        extra_km = round(distance_km - 80, 1)
+        extra_km_cost = round(extra_km * pricing["extra_km"])
 
     driver_cost = pricing["driver_bata"]
     total_price = base_price + extra_km_cost + driver_cost
 
     return {
-        "distance_km": distance_km,
-        "total_distance_km": distance_km,
+        "distance_km": round(distance_km, 1),
+        "total_distance_km": round(distance_km, 1),
         "vehicle_cost": base_price + extra_km_cost,
         "driver_cost": driver_cost,
         "total_price": total_price,
         "breakdown": {
             "base_price_8hrs_80km": base_price,
-            "extra_km": round(extra_km, 1),
+            "extra_km": extra_km,
             "extra_km_rate": pricing["extra_km"],
             "extra_km_cost": extra_km_cost,
             "driver_bata": driver_cost,
-            "calculation": f"Base ₹{base_price}" + (f" + {round(extra_km, 1)} extra km x ₹{pricing['extra_km']}/km = ₹{extra_km_cost}" if extra_km > 0 else "") + f" + Driver ₹{driver_cost}"
+            "calculation": f"Base ₹{base_price}" + (f" + {extra_km} extra km x ₹{pricing['extra_km']}/km = ₹{extra_km_cost}" if extra_km > 0 else "") + f" + Driver ₹{driver_cost}"
         }
     }
 
@@ -529,7 +604,7 @@ class CallbackRequest(BaseModel):
 # ============ ROUTES ============
 @api_router.get("/")
 async def root():
-    return {"message": "LuxTravel API is running"}
+    return {"message": "Pravasi Tours & Travels API is running"}
 
 
 @api_router.get("/vehicles")
@@ -560,7 +635,7 @@ async def get_quotation(req: QuotationRequest):
         logger.info(f"Using frontend-provided distance: {distance_km} km")
     else:
         distance_result = await get_distance_from_google(req.from_location, req.to_location)
-        if distance_result["status"] not in ["OK", "FALLBACK"]:
+        if distance_result["status"] not in ["OK", "CACHED", "FALLBACK"]:
             logger.warning(f"Google Maps API returned {distance_result['status']}, using fallback")
             distance_result = {"distance_km": 250.0, "duration_text": "~5 hours (estimated)", "status": "FALLBACK"}
         distance_km = distance_result["distance_km"]

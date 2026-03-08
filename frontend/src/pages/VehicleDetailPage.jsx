@@ -73,7 +73,7 @@ export default function VehicleDetailPage() {
 
   if (loading) {
     return (
-      <div className="pt-28 pb-20 max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
+      <div className="pt-24 sm:pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-20">
         <Skeleton className="h-8 w-32 mb-8" />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <Skeleton className="aspect-[16/10] rounded-3xl" />
@@ -93,8 +93,8 @@ export default function VehicleDetailPage() {
   const { pricing } = vehicle;
 
   return (
-    <div className="pt-28 pb-20 bg-[#F8FAFC]" data-testid="vehicle-detail-page">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
+    <div className="pt-24 sm:pt-28 pb-20 bg-[#F8FAFC]" data-testid="vehicle-detail-page">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-20">
         {/* Back Button */}
         <Link
           to="/#vehicles"
@@ -141,7 +141,7 @@ export default function VehicleDetailPage() {
               <Badge className="bg-[#1E3A8A] text-white rounded-full text-xs">{vehicle.category?.toUpperCase()}</Badge>
               {vehicle.ac && <Badge className="bg-[#3B82F6] text-white rounded-full text-xs">AC</Badge>}
             </div>
-            <h1 className="font-playfair text-3xl md:text-4xl font-bold text-[#0F172A] mb-3">{vehicle.name}</h1>
+            <h1 className="font-playfair text-2xl sm:text-3xl md:text-4xl font-bold text-[#0F172A] mb-3">{vehicle.name}</h1>
             <p className="text-base text-[#64748B] leading-relaxed mb-6">{vehicle.description}</p>
 
             <div className="flex items-center gap-6 mb-8">
@@ -178,10 +178,10 @@ export default function VehicleDetailPage() {
             </div>
 
             {/* Quick Quote Form */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-100" data-testid="quick-quote-form">
+            <div className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-100" data-testid="quick-quote-form">
               <h3 className="text-sm font-bold text-[#0F172A] mb-4 uppercase tracking-wider">Get Quick Quote</h3>
 
-              <div className="flex gap-2 mb-4">
+              <div className="flex flex-wrap gap-2 mb-4">
                 {["outstation", "local"].map((type) => (
                   <button
                     key={type}
@@ -199,7 +199,7 @@ export default function VehicleDetailPage() {
               </div>
 
               <div className="space-y-3">
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 xs:grid-cols-2 gap-3">
                   <div className="relative">
                     <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#3B82F6]" />
                     <input
@@ -224,7 +224,7 @@ export default function VehicleDetailPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 xs:grid-cols-2 gap-3">
                   <Popover>
                     <PopoverTrigger asChild>
                       <button

@@ -30,9 +30,17 @@ export default function Navbar() {
     if (href.startsWith("/#")) {
       const id = href.replace("/#", "");
       if (location.pathname === "/") {
-        const el = document.getElementById(id);
-        if (el) el.scrollIntoView({ behavior: "smooth" });
+        // Delay scroll to allow mobile menu close animation to finish
+        setTimeout(() => {
+          const el = document.getElementById(id);
+          if (el) {
+            const navHeight = 80; // account for fixed navbar
+            const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
+            window.scrollTo({ top, behavior: "smooth" });
+          }
+        }, 350);
       } else {
+        // Navigate to home page, then scroll after load
         window.location.href = href;
       }
     }
@@ -50,15 +58,15 @@ export default function Navbar() {
           : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
-        <div className="flex items-center justify-between h-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-20">
+        <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3" data-testid="nav-logo">
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${scrolled ? "bg-[#1E3A8A]" : "bg-white/20 backdrop-blur-sm"}`}>
-              <Car className={`w-5 h-5 ${scrolled ? "text-white" : "text-white"}`} />
+          <Link to="/" className="flex items-center gap-2 sm:gap-3 min-w-0" data-testid="nav-logo">
+            <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 ${scrolled ? "bg-[#1E3A8A]" : "bg-white/20 backdrop-blur-sm"}`}>
+              <Car className={`w-4 h-4 sm:w-5 sm:h-5 ${scrolled ? "text-white" : "text-white"}`} />
             </div>
-            <span className={`font-playfair text-xl font-bold tracking-tight ${scrolled ? "text-[#0F172A]" : "text-white"}`}>
-              LuxTravel
+            <span className={`font-playfair text-base sm:text-xl font-bold tracking-tight truncate ${scrolled ? "text-[#0F172A]" : "text-white"}`}>
+              Pravasi Tours & Travels
             </span>
           </Link>
 
@@ -79,11 +87,11 @@ export default function Navbar() {
           </div>
 
           {/* CTA + Mobile Toggle */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <a
               href="tel:+919845592920"
               data-testid="nav-call-btn"
-              className={`hidden md:flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold transition-all duration-300 ${
+              className={`hidden md:flex items-center gap-2 rounded-full px-5 lg:px-6 py-2.5 text-sm font-semibold transition-all duration-300 ${
                 scrolled
                   ? "bg-[#1E3A8A] text-white hover:bg-[#1E3A8A]/90 shadow-lg shadow-[#1E3A8A]/20"
                   : "bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 border border-white/20"
@@ -110,9 +118,10 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-b border-gray-100 shadow-lg"
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="md:hidden bg-white border-b border-gray-100 shadow-lg overflow-hidden"
           >
-            <div className="px-6 py-6 space-y-4">
+            <div className="px-4 sm:px-6 py-5 space-y-3">
               {navLinks.map((link) => (
                 <button
                   key={link.label}

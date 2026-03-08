@@ -24,26 +24,26 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-20 md:py-32 bg-[#F8FAFC]" data-testid="how-it-works">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
+    <section id="how-it-works" className="py-16 md:py-32 bg-[#F8FAFC]" data-testid="how-it-works">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-16"
         >
-          <p className="text-sm font-semibold tracking-[0.2em] uppercase text-[#F59E0B] mb-3 font-outfit">
+          <p className="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-[#F59E0B] mb-3 font-outfit">
             Simple Process
           </p>
-          <h2 className="font-playfair text-3xl md:text-5xl font-semibold text-[#1E3A8A] mb-4">
+          <h2 className="font-playfair text-2xl sm:text-3xl md:text-5xl font-semibold text-[#1E3A8A] mb-4">
             How It Works
           </h2>
-          <p className="text-base md:text-lg text-[#64748B] max-w-2xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base md:text-lg text-[#64748B] max-w-2xl mx-auto leading-relaxed">
             Booking your ride is as easy as 1-2-3. No complicated steps, just seamless travel planning.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12">
           {steps.map((s, i) => (
             <motion.div
               key={i}
@@ -55,7 +55,7 @@ export default function HowItWorks() {
             >
               {/* Connector line */}
               {i < steps.length - 1 && (
-                <div className="hidden md:block absolute top-12 left-[60%] w-[80%] h-[2px] bg-gradient-to-r from-[#1E3A8A]/20 to-transparent" />
+                <div className="hidden sm:block absolute top-12 left-[60%] w-[80%] h-[2px] bg-gradient-to-r from-[#1E3A8A]/20 to-transparent" />
               )}
 
               <div className="relative inline-flex items-center justify-center mb-6">

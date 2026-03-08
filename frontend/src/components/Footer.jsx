@@ -4,15 +4,15 @@ import { Car, Phone, Mail, MapPin, Facebook, Instagram, Twitter, Youtube } from 
 export default function Footer() {
   return (
     <footer className="bg-[#0F172A] text-white" data-testid="footer">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20 py-16 md:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-16 md:py-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 lg:gap-12">
           {/* Brand */}
-          <div>
+          <div className="sm:col-span-2 lg:col-span-1">
             <div className="flex items-center gap-3 mb-5">
               <div className="w-10 h-10 rounded-xl bg-[#F59E0B] flex items-center justify-center">
                 <Car className="w-5 h-5 text-white" />
               </div>
-              <span className="font-playfair text-xl font-bold">LuxTravel</span>
+              <span className="font-playfair text-lg sm:text-xl font-bold">Pravasi Tours & Travels</span>
             </div>
             <p className="text-sm text-white/60 leading-relaxed mb-6">
               Premium vehicle booking for every journey. Travel in style and comfort across India.
@@ -74,7 +74,7 @@ export default function Footer() {
               </li>
               <li className="flex items-start gap-3 text-sm text-white/50">
                 <Mail className="w-4 h-4 mt-0.5 text-[#F59E0B] shrink-0" />
-                <span>booking@luxtravel.in</span>
+                <span>booking@pravasitours.in</span>
               </li>
               <li className="flex items-start gap-3 text-sm text-white/50">
                 <MapPin className="w-4 h-4 mt-0.5 text-[#F59E0B] shrink-0" />
@@ -84,11 +84,11 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="mt-10 sm:mt-16 pt-6 sm:pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-white/40">
-            2024 LuxTravel. All rights reserved.
+            2024 Pravasi Tours & Travels. All rights reserved.
           </p>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
             {["Privacy Policy", "Terms of Service", "Refund Policy"].map((link) => (
               <Link key={link} to="/" className="text-xs text-white/40 hover:text-white/70 transition-colors">
                 {link}

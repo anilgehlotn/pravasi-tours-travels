@@ -2,17 +2,30 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Users, Snowflake, ArrowRight, IndianRupee } from "lucide-react";
 
-export default function VehicleCard({ vehicle }) {
+export default function VehicleCard({ vehicle, index = 0 }) {
   const { id, name, seats, ac, image, pricing } = vehicle;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.4 }}
-      className="vehicle-card group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-[#1E3A8A]/10 transition-all duration-500 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_16px_40px_rgb(0,0,0,0.08)]"
+      layout
+      initial={{ opacity: 0, scale: 0.95, y: 20 }}
+      animate={{
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        transition: {
+          duration: 0.4,
+          delay: index * 0.06,
+          ease: [0.25, 0.46, 0.45, 0.94],
+        },
+      }}
+      exit={{
+        opacity: 0,
+        scale: 0.95,
+        transition: { duration: 0.25, ease: "easeInOut" },
+      }}
+      whileHover={{ y: -6, transition: { duration: 0.25 } }}
+      className="vehicle-card group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-[#1E3A8A]/10 transition-shadow duration-500 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_16px_40px_rgb(0,0,0,0.08)]"
       data-testid={`vehicle-card-${id}`}
     >
       {/* Image */}
@@ -36,12 +49,12 @@ export default function VehicleCard({ vehicle }) {
       </div>
 
       {/* Content */}
-      <div className="p-6">
+      <div className="p-4 sm:p-6">
         <div className="flex items-start justify-between mb-3">
-          <h3 className="text-lg font-bold text-[#0F172A] font-manrope">{name}</h3>
+          <h3 className="text-base sm:text-lg font-bold text-[#0F172A] font-manrope">{name}</h3>
         </div>
 
-        <div className="flex items-center gap-4 mb-5">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-5">
           <div className="flex items-center gap-1.5 text-xs text-[#64748B]">
             <Users className="w-3.5 h-3.5 text-[#3B82F6]" />
             <span>{seats} Seats</span>

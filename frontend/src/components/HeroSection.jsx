@@ -54,7 +54,7 @@ export default function HeroSection({ vehicles = [] }) {
   };
 
   return (
-    <section data-testid="hero-section" className="relative min-h-[95vh] flex items-end pb-24 md:pb-32 overflow-hidden">
+    <section data-testid="hero-section" className="relative min-h-[100svh] flex items-end pb-6 sm:pb-24 md:pb-32 overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
@@ -65,21 +65,21 @@ export default function HeroSection({ vehicles = [] }) {
         <div className="hero-overlay absolute inset-0" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 lg:px-20 w-full">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-20 w-full">
         {/* Hero Text */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="mb-12"
+          className="mb-6 sm:mb-12"
         >
-          <p className="text-sm font-medium tracking-[0.2em] uppercase text-[#F59E0B] mb-4 font-outfit">
+          <p className="text-xs sm:text-sm font-medium tracking-[0.2em] uppercase text-[#F59E0B] mb-2 sm:mb-4 font-outfit">
             Premium Vehicle Booking
           </p>
-          <h1 className="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1] mb-5 max-w-3xl">
+          <h1 className="font-playfair text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.1] mb-3 sm:mb-5 max-w-3xl">
             Travel in Style,<br />Arrive in Comfort
           </h1>
-          <p className="text-base md:text-lg text-white/70 max-w-xl font-manrope leading-relaxed">
+          <p className="text-sm sm:text-base md:text-lg text-white/70 max-w-xl font-manrope leading-relaxed">
             Book premium vehicles for outstation trips, local packages, and group travel across India.
           </p>
         </motion.div>
@@ -90,16 +90,16 @@ export default function HeroSection({ vehicles = [] }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
           data-testid="search-bar"
-          className="glass rounded-3xl p-6 md:p-8 shadow-[0_20px_50px_rgb(0,0,0,0.15)]"
+          className="glass rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-[0_20px_50px_rgb(0,0,0,0.15)]"
         >
           {/* Trip Type Tabs */}
-          <div className="flex gap-2 mb-6">
+          <div className="flex gap-2 mb-4 sm:mb-6 overflow-x-auto no-scrollbar">
             {["outstation", "local"].map((type) => (
               <button
                 key={type}
                 data-testid={`trip-type-${type}`}
                 onClick={() => setForm({ ...form, trip_type: type })}
-                className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
+                className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 whitespace-nowrap ${
                   form.trip_type === type
                     ? "bg-[#1E3A8A] text-white shadow-lg shadow-[#1E3A8A]/20"
                     : "bg-gray-100 text-[#64748B] hover:bg-gray-200"
@@ -110,7 +110,7 @@ export default function HeroSection({ vehicles = [] }) {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {/* From Location */}
             <div className="space-y-1.5">
               <label className="text-xs font-semibold tracking-wider uppercase text-[#64748B]">From</label>
@@ -217,7 +217,7 @@ export default function HeroSection({ vehicles = [] }) {
           </div>
 
           {/* Second Row */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 mt-3 sm:mt-4">
             {/* Travelers (for outstation) */}
             {form.trip_type === "outstation" && (
               <div className="space-y-1.5">
@@ -240,19 +240,30 @@ export default function HeroSection({ vehicles = [] }) {
             {/* Vehicle Select */}
             <div className="space-y-1.5">
               <label className="text-xs font-semibold tracking-wider uppercase text-[#64748B]">Vehicle</label>
-              <Select value={form.vehicle_id} onValueChange={(val) => setForm({ ...form, vehicle_id: val })}>
+              <Select value={form.vehicle_id || undefined} onValueChange={(val) => setForm({ ...form, vehicle_id: val })}>
                 <SelectTrigger data-testid="vehicle-select" className="h-12 rounded-xl bg-[#F1F5F9] border-0 ring-1 ring-gray-200 focus:ring-2 focus:ring-[#1E3A8A]/30 text-sm">
                   <div className="flex items-center gap-2">
                     <Car className="w-4 h-4 text-[#3B82F6]" />
                     <SelectValue placeholder="Select vehicle" />
                   </div>
                 </SelectTrigger>
-                <SelectContent>
-                  {vehicles.map((v) => (
-                    <SelectItem key={v.id} value={v.id}>
-                      {v.name} ({v.seats} seats)
+                <SelectContent
+                  position="popper"
+                  side="top"
+                  sideOffset={5}
+                  className="max-h-[300px] overflow-y-auto z-[9999]"
+                >
+                  {vehicles.length > 0 ? (
+                    vehicles.map((v) => (
+                      <SelectItem key={v.id} value={v.id}>
+                        {v.name} ({v.seats} seats)
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <SelectItem value="__loading" disabled>
+                      Loading vehicles...
                     </SelectItem>
-                  ))}
+                  )}
                 </SelectContent>
               </Select>
             </div>

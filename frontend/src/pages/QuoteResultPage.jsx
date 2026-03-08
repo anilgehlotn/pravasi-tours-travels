@@ -59,7 +59,7 @@ export default function QuoteResultPage() {
 
   if (loading) {
     return (
-      <div className="pt-28 pb-20 max-w-5xl mx-auto px-6 md:px-12 lg:px-20">
+      <div className="pt-24 sm:pt-28 pb-20 max-w-5xl mx-auto px-4 sm:px-6 md:px-12 lg:px-20">
         <Skeleton className="h-8 w-32 mb-8" />
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           <div className="lg:col-span-3 space-y-4">
@@ -76,9 +76,8 @@ export default function QuoteResultPage() {
 
   if (!quote) return null;
 
-  return (
-    <div className="pt-28 pb-20 bg-[#F8FAFC]" data-testid="quote-result-page">
-      <div className="max-w-5xl mx-auto px-6 md:px-12 lg:px-20">
+  return (      <div className="pt-24 sm:pt-28 pb-20 bg-[#F8FAFC]" data-testid="quote-result-page">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 md:px-12 lg:px-20">
         {/* Back */}
         <Link
           to="/"
@@ -110,13 +109,13 @@ export default function QuoteResultPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm"
+              className="bg-white rounded-2xl p-4 sm:p-6 border border-gray-100 shadow-sm"
             >
-              <div className="flex gap-5">
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-5">
                 <img
                   src={quote.vehicle_image}
                   alt={quote.vehicle_name}
-                  className="w-32 h-24 rounded-xl object-cover shrink-0"
+                  className="w-full sm:w-32 h-40 sm:h-24 rounded-xl object-cover shrink-0"
                 />
                 <div>
                   <h2 className="font-playfair text-xl font-bold text-[#0F172A] mb-1">{quote.vehicle_name}</h2>
@@ -133,7 +132,7 @@ export default function QuoteResultPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm"
+              className="bg-white rounded-2xl p-4 sm:p-6 border border-gray-100 shadow-sm"
             >
               <h3 className="text-sm font-bold text-[#0F172A] mb-5 uppercase tracking-wider">Trip Details</h3>
               <div className="space-y-4">
@@ -159,7 +158,7 @@ export default function QuoteResultPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-gray-100">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4 pt-4 border-t border-gray-100">
                   <div>
                     <p className="text-xs text-[#94A3B8] mb-0.5">Distance</p>
                     <p className="text-sm font-semibold text-[#0F172A] flex items-center gap-1" data-testid="quote-distance">
@@ -193,7 +192,7 @@ export default function QuoteResultPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm"
+              className="bg-white rounded-2xl p-4 sm:p-6 border border-gray-100 shadow-sm"
             >
               <h3 className="text-sm font-bold text-[#0F172A] mb-5 uppercase tracking-wider">Price Breakdown</h3>
               <div className="space-y-3">
@@ -242,9 +241,9 @@ export default function QuoteResultPage() {
                 {/* Divider */}
                 <div className="ticket-divider my-4" />
 
-                <div className="flex justify-between items-center pt-2">
-                  <span className="text-base font-bold text-[#0F172A]">Total Estimated Price</span>
-                  <span className="text-2xl font-bold text-[#1E3A8A] flex items-center" data-testid="quote-total-price">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 pt-2">
+                  <span className="text-sm sm:text-base font-bold text-[#0F172A]">Total Estimated Price</span>
+                  <span className="text-xl sm:text-2xl font-bold text-[#1E3A8A] flex items-center" data-testid="quote-total-price">
                     <IndianRupee className="w-5 h-5" />
                     {quote.total_price?.toLocaleString("en-IN")}
                   </span>
@@ -262,12 +261,12 @@ export default function QuoteResultPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="bg-[#1E3A8A] rounded-2xl p-6 text-white"
+                className="bg-[#1E3A8A] rounded-2xl p-4 sm:p-6 text-white"
               >
                 <p className="text-xs tracking-wider uppercase text-white/50 mb-2">Your Quote</p>
                 <div className="flex items-baseline gap-2 mb-6">
-                  <span className="text-3xl font-bold flex items-center">
-                    <IndianRupee className="w-6 h-6" />
+                  <span className="text-2xl sm:text-3xl font-bold flex items-center">
+                    <IndianRupee className="w-5 sm:w-6 h-5 sm:h-6" />
                     {quote.total_price?.toLocaleString("en-IN")}
                   </span>
                   <span className="text-sm text-white/50">estimated</span>

@@ -30,18 +30,18 @@ const faqs = [
 
 export default function FAQ() {
   return (
-    <section className="py-20 md:py-32 bg-white" data-testid="faq-section">
-      <div className="max-w-3xl mx-auto px-6 md:px-12 lg:px-20">
+    <section className="py-16 md:py-32 bg-white" data-testid="faq-section">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-12 lg:px-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-16"
         >
-          <p className="text-sm font-semibold tracking-[0.2em] uppercase text-[#F59E0B] mb-3 font-outfit">
+          <p className="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-[#F59E0B] mb-3 font-outfit">
             FAQ
           </p>
-          <h2 className="font-playfair text-3xl md:text-5xl font-semibold text-[#1E3A8A] mb-4">
+          <h2 className="font-playfair text-2xl sm:text-3xl md:text-5xl font-semibold text-[#1E3A8A] mb-4">
             Frequently Asked Questions
           </h2>
         </motion.div>
@@ -56,7 +56,7 @@ export default function FAQ() {
               <AccordionItem
                 key={i}
                 value={`item-${i}`}
-                className="border border-gray-100 rounded-2xl px-6 overflow-hidden bg-[#F8FAFC] hover:bg-white transition-colors data-[state=open]:bg-white data-[state=open]:shadow-[0_4px_20px_rgb(0,0,0,0.04)]"
+                className="border border-gray-100 rounded-xl sm:rounded-2xl px-4 sm:px-6 overflow-hidden bg-[#F8FAFC] hover:bg-white transition-colors data-[state=open]:bg-white data-[state=open]:shadow-[0_4px_20px_rgb(0,0,0,0.04)]"
                 data-testid={`faq-item-${i}`}
               >
                 <AccordionTrigger className="text-left text-sm font-semibold text-[#0F172A] hover:no-underline py-5">
