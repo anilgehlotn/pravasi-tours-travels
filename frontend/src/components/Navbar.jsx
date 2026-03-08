@@ -61,7 +61,17 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-20">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 sm:gap-3 min-w-0" data-testid="nav-logo">
+          <Link
+            to="/"
+            onClick={() => {
+              setMobileOpen(false);
+              if (location.pathname === "/") {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
+            }}
+            className="flex items-center gap-2 sm:gap-3 min-w-0"
+            data-testid="nav-logo"
+          >
             <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 ${scrolled ? "bg-[#1E3A8A]" : "bg-white/20 backdrop-blur-sm"}`}>
               <Car className={`w-4 h-4 sm:w-5 sm:h-5 ${scrolled ? "text-white" : "text-white"}`} />
             </div>
