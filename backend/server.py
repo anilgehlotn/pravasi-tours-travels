@@ -1,7 +1,13 @@
-from fastapi import FastAPI, APIRouter, HTTPException
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, Header
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+from starlette.responses import JSONResponse
 from motor.motor_asyncio import AsyncIOMotorClient
+from contextlib import asynccontextmanager
 import os
 import logging
 import httpx
@@ -11,9 +17,28 @@ from pydantic import BaseModel, Field
 from typing import List, Optional
 import uuid
 from datetime import datetime, timezone
+from fastapi import Request
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
+
+# ============ ENV VAR VALIDATION ============
+def validate_env_vars():
+    """Validate required environment variables at startup, fail fast."""
+    required_vars = ['MONGO_URL', 'DB_NAME']
+    for var in required_vars:
+        if not os.environ.get(var):
+            raise RuntimeError(f"Missing required environment variable: {var}")
+    
+    # Google Maps API Key is optional but warn if missing
+    if not os.environ.get('GOOGLE_API_KEY'):
+        logging.warning("GOOGLE_API_KEY not set - distance calculations will use fallback data")
+    
+    # API Key for authentication
+    if not os.environ.get('API_KEY'):
+        raise RuntimeError("Missing required environment variable: API_KEY")
+
+validate_env_vars()
 
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
@@ -23,12 +48,86 @@ db = client[os.environ['DB_NAME']]
 # Google Maps API key
 GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY', '')
 
-app = FastAPI()
-api_router = APIRouter(prefix="/api")
+# API Key for authentication
+API_KEY = os.environ['API_KEY']
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+# Rate limiter
+limiter = Limiter(key_func=get_remote_address)
+
+# ============ AUTHENTICATION ============
+security = HTTPBearer(auto_error=False)
+
+async def verify_api_key(credentials: HTTPAuthorizationCredentials = Depends(security)) -> str:
+    """Verify API key from Authorization header or X-API-Key header."""
+    if credentials and credentials.credentials == API_KEY:
+        return credentials.credentials
+    raise HTTPException(status_code=401, detail="Invalid or missing API key")
+
+# Alternative: verify via X-API-Key header
+async def verify_api_key_header(x_api_key: str = Header(None)) -> str:
+    """Verify API key from X-API-Key header."""
+    if x_api_key == API_KEY:
+        return x_api_key
+    raise HTTPException(status_code=401, detail="Invalid or missing API key")
+
+# ============ LIFESPAN CONTEXT MANAGER ============
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Handle startup and shutdown events using lifespan context manager."""
+    # Startup: Seed vehicles if collection is empty
+    try:
+        count = await db.vehicles.count_documents({})
+        if count == 0:
+            for v in VEHICLES_DATA:
+                await db.vehicles.insert_one(v.copy())
+            logger.info(f"Seeded {len(VEHICLES_DATA)} vehicles into MongoDB")
+        else:
+            # Update existing vehicles with latest data
+            for v in VEHICLES_DATA:
+                await db.vehicles.update_one(
+                    {"id": v["id"]},
+                    {"$set": v},
+                    upsert=True
+                )
+            logger.info(f"Updated {len(VEHICLES_DATA)} vehicles in MongoDB")
+        logger.info("✅ FastAPI startup complete - MongoDB connected, vehicles seeded")
+    except Exception as e:
+        logger.error(f"❌ Startup failed: {e}")
+        raise
+    
+    yield
+    
+    # Shutdown: Close database client
+    try:
+        client.close()
+        logger.info("✅ Database client closed")
+    except Exception as e:
+        logger.error(f"❌ Shutdown error: {e}")
+
+# ============ APP INITIALIZATION ============
+api_router = APIRouter(prefix="/api")
+
+app = FastAPI(
+    title="Pravasi Tours & Travels API",
+    description="Backend API for travel booking application",
+    version="1.0.0",
+    lifespan=lifespan
+)
+
+# Add rate limiter state to app
+app.state.limiter = limiter
+
+# Exception handler for rate limiting
+@app.exception_handler(RateLimitExceeded)
+async def rate_limit_handler(request, exc):
+    return JSONResponse(
+        status_code=429,
+        content={"detail": "Rate limit exceeded: 10 requests per minute allowed"}
+    )
 
 # ============ VEHICLE DATA ============
 VEHICLES_DATA = [
@@ -622,7 +721,8 @@ async def get_vehicle(vehicle_id: str):
 
 
 @api_router.post("/getQuotation")
-async def get_quotation(req: QuotationRequest):
+@limiter.limit("10/minute")
+async def get_quotation(request: Request, req: QuotationRequest):
     # Validate vehicle
     vehicle = await db.vehicles.find_one({"id": req.vehicle_id}, {"_id": 0})
     if not vehicle:
@@ -740,31 +840,6 @@ async def confirm_booking(quote_id: str):
     await db.quotations.update_one({"id": quote_id}, {"$set": {"status": "booked"}})
 
     return {"message": "Booking confirmed successfully!", "data": booking}
-
-
-# ============ STARTUP & SHUTDOWN ============
-@app.on_event("startup")
-async def startup():
-    # Seed vehicles if collection is empty
-    count = await db.vehicles.count_documents({})
-    if count == 0:
-        for v in VEHICLES_DATA:
-            await db.vehicles.insert_one(v.copy())
-        logger.info(f"Seeded {len(VEHICLES_DATA)} vehicles into MongoDB")
-    else:
-        # Update existing vehicles with latest data
-        for v in VEHICLES_DATA:
-            await db.vehicles.update_one(
-                {"id": v["id"]},
-                {"$set": v},
-                upsert=True
-            )
-        logger.info(f"Updated {len(VEHICLES_DATA)} vehicles in MongoDB")
-
-
-@app.on_event("shutdown")
-async def shutdown_db_client():
-    client.close()
 
 
 # Include router and middleware
