@@ -9,6 +9,7 @@ const isDevServer = process.env.NODE_ENV !== "production";
 // Environment variable overrides
 const config = {
   enableHealthCheck: process.env.ENABLE_HEALTH_CHECK === "true",
+  enableBundleAnalysis: process.env.ANALYZE_BUNDLE === "true",
 };
 
 // Conditionally load health check modules only if enabled

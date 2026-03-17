@@ -55,11 +55,14 @@ export default function HeroSection({ vehicles = [] }) {
 
   return (
     <section data-testid="hero-section" className="relative min-h-[100svh] flex items-end pb-6 sm:pb-24 md:pb-32 overflow-hidden">
-      {/* Background Image */}
+      {/* Background Image - Optimized */}
       <div className="absolute inset-0">
         <img
-          src="https://images.unsplash.com/photo-1758216383800-7023ee8ed42b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODl8MHwxfHNlYXJjaHw0fHxsdXh1cnklMjBzZWRhbiUyMGNhciUyMHdoaXRlfGVufDB8fHx8MTc3MjgwMzI4Mnww&ixlib=rb-4.1.0&q=85"
+          src="https://images.unsplash.com/photo-1758216383800-7023ee8ed42b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODl8MHwxfHNlYXJjaHw0fHxsdXh1cnklMjBzZWRhbiUyMGNhciUyMHdoaXRlfGVufDB8fHx8MTc3MjgwMzI4Mnww&ixlib=rb-4.1.0&q=85&w=1920&h=1080"
           alt="Luxury vehicle"
+          width="1920"
+          height="1080"
+          loading="lazy"
           className="w-full h-full object-cover"
         />
         <div className="hero-overlay absolute inset-0" />

@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { Users, Snowflake, ArrowRight, IndianRupee } from "lucide-react";
 
-export default function VehicleCard({ vehicle, index = 0 }) {
+// Memoize to prevent unnecessary re-renders
+const VehicleCard = ({ vehicle, index = 0 }) => {
   const { id, name, seats, ac, image, pricing } = vehicle;
 
   return (
@@ -28,13 +30,16 @@ export default function VehicleCard({ vehicle, index = 0 }) {
       className="vehicle-card group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-[#1E3A8A]/10 transition-shadow duration-500 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_16px_40px_rgb(0,0,0,0.08)]"
       data-testid={`vehicle-card-${id}`}
     >
-      {/* Image */}
+      {/* Image - Optimized with width/height and better formats */}
       <div className="relative overflow-hidden aspect-[16/10]">
         <img
           src={image}
           alt={name}
+          width="400"
+          height="250"
           className="vehicle-card-image w-full h-full object-cover"
           loading="lazy"
+          decoding="async"
         />
         <div className="absolute top-4 right-4">
           <div className="price-tag px-3 py-1.5 rounded-full text-xs font-bold shadow-md">
@@ -83,4 +88,7 @@ export default function VehicleCard({ vehicle, index = 0 }) {
       </div>
     </motion.div>
   );
-}
+};
+
+// Memoize to prevent unnecessary re-renders
+export default memo(VehicleCard);
