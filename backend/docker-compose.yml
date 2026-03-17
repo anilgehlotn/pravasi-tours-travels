@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pravasi-backend
+    ports:
+      - "8000:8000"
+    environment:
+      MONGO_URL: ${MONGO_URL}
+      DB_NAME: ${DB_NAME}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+      API_KEY: ${API_KEY}
+      CORS_ORIGINS: ${CORS_ORIGINS:-*}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/').read()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - pravasi-network
+    # Optional: Volume for logs
+    volumes:
+      - ./logs:/app/logs
+
+networks:
+  pravasi-network:
+    driver: bridge
+
+# To use:
+# 1. Create .env.docker file with environment variables
+# 2. docker-compose --env-file .env.docker up -d
+# 3. Check logs: docker-compose logs -f backend
+# 4. Stop: docker-compose down
