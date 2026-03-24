@@ -137,7 +137,7 @@ VEHICLES_DATA = [
         "category": "sedan",
         "seats": 4,
         "ac": True,
-        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/v1773990196/vehicles/sedan/img_001.jpg",
+        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/f_auto,q_auto,w_800/v1773990196/vehicles/sedan/img_001.jpg",
         "description": "Comfortable sedan perfect for family trips and city transfers. Ideal for 2-4 passengers with luggage.",
         "features": ["Air Conditioned", "4 Seater", "Spacious Boot", "Music System", "GPS Navigation"],
         "pricing": {
@@ -155,7 +155,7 @@ VEHICLES_DATA = [
         "category": "suv",
         "seats": 7,
         "ac": True,
-        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/v1773990189/vehicles/innova/img_001.jpg",
+        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/f_auto,q_auto,w_800/v1773990189/vehicles/innova/img_001.jpg",
         "description": "Spacious Toyota Innova for comfortable group travel. Perfect for families and small groups.",
         "features": ["Air Conditioned", "7 Seater", "Ample Luggage Space", "Comfortable Seats", "Music System"],
         "pricing": {
@@ -173,7 +173,7 @@ VEHICLES_DATA = [
         "category": "suv",
         "seats": 7,
         "ac": True,
-        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/v1773990193/vehicles/innova-crysta/img_001.jpg",
+        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/f_auto,q_auto,w_800/v1773990193/vehicles/innova-crysta/img_001.jpg",
         "description": "Premium Innova Crysta with captain seats for a luxurious travel experience.",
         "features": ["Air Conditioned", "7 Seater", "Captain Seats", "Premium Interior", "Rear AC Vents"],
         "pricing": {
@@ -191,7 +191,7 @@ VEHICLES_DATA = [
         "category": "suv",
         "seats": 7,
         "ac": True,
-        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/v1773990195/vehicles/innova-hybrid/img_001.jpg",
+        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/f_auto,q_auto,w_800/v1773990195/vehicles/innova-hybrid/img_001.jpg",
         "description": "Eco-friendly Innova Hybrid combining fuel efficiency with comfort. Premium hybrid technology.",
         "features": ["Air Conditioned", "7 Seater", "Hybrid Engine", "Fuel Efficient", "Premium Interior"],
         "pricing": {
@@ -209,7 +209,7 @@ VEHICLES_DATA = [
         "category": "suv",
         "seats": 7,
         "ac": True,
-        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/v1773998470/vehicles/toyota-fortuner/img_001.jpg",
+        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/f_auto,q_auto,w_800/v1773998470/vehicles/toyota-fortuner/img_001.jpg",
         "description": "Premium Toyota Fortuner for executive and luxury travel. Powerful SUV with commanding presence.",
         "features": ["Air Conditioned", "7 Seater", "4x4 Available", "Premium SUV", "Leather Seats"],
         "pricing": {
@@ -227,7 +227,7 @@ VEHICLES_DATA = [
         "category": "van",
         "seats": 12,
         "ac": False,
-        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/v1773998473/vehicles/tempo-non-ac/img_001.jpg",
+        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/f_auto,q_auto,w_800/v1773998473/vehicles/tempo-non-ac/img_001.jpg",
         "description": "Budget-friendly Tempo Traveller without AC. Great for short group trips.",
         "features": ["Non AC", "12 Seater", "Push-back Seats", "Luggage Carrier", "Music System"],
         "pricing": {
@@ -245,7 +245,7 @@ VEHICLES_DATA = [
         "category": "van",
         "seats": 12,
         "ac": True,
-        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/v1773998471/vehicles/tempo-ac/img_001.jpg",
+        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/f_auto,q_auto,w_800/v1773998471/vehicles/tempo-ac/img_001.jpg",
         "description": "Air-conditioned Tempo Traveller for comfortable group travel. Ideal for pilgrimages and tours.",
         "features": ["Air Conditioned", "12 Seater", "Push-back Seats", "Luggage Carrier", "Curtains"],
         "pricing": {
@@ -263,7 +263,7 @@ VEHICLES_DATA = [
         "category": "van",
         "seats": 9,
         "ac": True,
-        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/v1773990202/vehicles/tt-luxury/img_001.jpg",
+        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/f_auto,q_auto,w_800/v1773990202/vehicles/tt-luxury/img_001.jpg",
         "description": "Luxury 9-seater Tempo Traveller with premium interiors. Perfect for VIP group travel.",
         "features": ["Air Conditioned", "9 Seater", "Luxury Interior", "Sofa Seats", "LED TV", "Refrigerator"],
         "pricing": {
@@ -281,7 +281,7 @@ VEHICLES_DATA = [
         "category": "van",
         "seats": 17,
         "ac": True,
-        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/v1773990203/vehicles/urbania/img_001.jpg",
+        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/f_auto,q_auto,w_800/v1773990203/vehicles/urbania/img_001.jpg",
         "description": "Force Urbania 16+1 seater for medium group travel. Modern design with premium comfort.",
         "features": ["Air Conditioned", "17 Seater", "Premium Interior", "Push-back Seats", "USB Charging"],
         "pricing": {
@@ -299,7 +299,7 @@ VEHICLES_DATA = [
         "category": "bus",
         "seats": 21,
         "ac": True,
-        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/v1773990184/vehicles/bus-21/img_001.jpg",
+        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/f_auto,q_auto,w_800/v1773990184/vehicles/bus-21/img_001.jpg",
         "description": "Comfortable 21-seater mini bus for medium-sized groups. Great for corporate events.",
         "features": ["Air Conditioned", "21 Seater", "Push-back Seats", "Luggage Storage", "PA System"],
         "pricing": {
@@ -317,7 +317,7 @@ VEHICLES_DATA = [
         "category": "bus",
         "seats": 25,
         "ac": True,
-        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/v1773990186/vehicles/bus-25/img_001.jpg",
+        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/f_auto,q_auto,w_800/v1773990186/vehicles/bus-25/img_001.jpg",
         "description": "Spacious 25-seater bus ideal for group tours and corporate outings.",
         "features": ["Air Conditioned", "25 Seater", "Reclining Seats", "Overhead Storage", "Music System"],
         "pricing": {
@@ -335,7 +335,7 @@ VEHICLES_DATA = [
         "category": "bus",
         "seats": 33,
         "ac": True,
-        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/v1773990187/vehicles/bus-33/img_001.jpg",
+        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/f_auto,q_auto,w_800/v1773990187/vehicles/bus-33/img_001.jpg",
         "description": "Large 33-seater bus for big group travel. Comfortable seating for long journeys.",
         "features": ["Air Conditioned", "33 Seater", "Reclining Seats", "Entertainment System", "Restroom"],
         "pricing": {
@@ -353,7 +353,7 @@ VEHICLES_DATA = [
         "category": "bus",
         "seats": 45,
         "ac": True,
-        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/v1773998469/vehicles/bus-45/img_001.jpg",
+        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/f_auto,q_auto,w_800/v1773998469/vehicles/bus-45/img_001.jpg",
         "description": "Extra-large 45-seater bus for school trips, weddings and large group events.",
         "features": ["Air Conditioned", "45 Seater", "Reclining Seats", "GPS Tracking", "First Aid Kit"],
         "pricing": {
@@ -371,7 +371,7 @@ VEHICLES_DATA = [
         "category": "coach",
         "seats": 45,
         "ac": True,
-        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/v1773998467/vehicles/volvo-coach/img_001.jpg",
+        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/f_auto,q_auto,w_800/v1773998467/vehicles/volvo-coach/img_001.jpg",
         "description": "Premium Volvo Coach for luxury long-distance travel. Multi-axle with advanced suspension.",
         "features": ["Air Conditioned", "45 Seater", "Volvo Multi-Axle", "Individual Reading Lights", "Charging Points"],
         "pricing": {
@@ -389,7 +389,7 @@ VEHICLES_DATA = [
         "category": "coach",
         "seats": 40,
         "ac": True,
-        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/v1773998465/vehicles/sleeper-coach/img_001.jpg",
+        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/f_auto,q_auto,w_800/v1773998465/vehicles/sleeper-coach/img_001.jpg",
         "description": "Sleeper Coach for overnight long-distance travel. Individual berths for a restful journey.",
         "features": ["Air Conditioned", "40 Sleeper Berths", "Individual Curtains", "Blanket & Pillow", "USB Charging"],
         "pricing": {
