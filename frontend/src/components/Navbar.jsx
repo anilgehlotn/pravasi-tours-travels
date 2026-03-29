@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Phone, Car } from "lucide-react";
+import logo from '../assets/logo.png';
+
 
 const navLinks = [
   { label: "Vehicles", href: "/#vehicles" },
@@ -72,9 +74,16 @@ export default function Navbar() {
             className="flex items-center gap-2 sm:gap-3 min-w-0"
             data-testid="nav-logo"
           >
-            <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 ${scrolled ? "bg-[#1E3A8A]" : "bg-white/20 backdrop-blur-sm"}`}>
+            {/* <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 ${scrolled ? "bg-[#1E3A8A]" : "bg-white/20 backdrop-blur-sm"}`}>
               <Car className={`w-4 h-4 sm:w-5 sm:h-5 ${scrolled ? "text-white" : "text-white"}`} />
-            </div>
+            </div> */}
+
+            <img
+  src={logo}
+  alt="Pravasi Tours & Travels"
+  className="h-9 sm:h-10 w-auto object-contain shrink-0"
+/>
+
             <span className={`font-playfair text-base sm:text-xl font-bold tracking-tight truncate ${scrolled ? "text-[#0F172A]" : "text-white"}`}>
               Pravasi Tours & Travels
             </span>
