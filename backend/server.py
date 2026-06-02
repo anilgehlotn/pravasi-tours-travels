@@ -143,7 +143,7 @@ VEHICLES_DATA = [
         "pricing": {
             "local_8hrs_80km": 2200,
             "extra_km": 14,
-            "extra_hr": 180,
+            "extra_hr": 200,
             "outstation_km": 14,
             "min_km": 300,
             "driver_bata": 300
@@ -151,7 +151,7 @@ VEHICLES_DATA = [
     },
     {
         "id": "innova",
-        "name": "Innova",
+        "name": "Ertiga / Kia Carens",
         "category": "suv",
         "seats": 7,
         "ac": True,
@@ -161,7 +161,7 @@ VEHICLES_DATA = [
         "pricing": {
             "local_8hrs_80km": 3000,
             "extra_km": 18,
-            "extra_hr": 300,
+            "extra_hr": 250,
             "outstation_km": 18,
             "min_km": 300,
             "driver_bata": 400
@@ -179,7 +179,7 @@ VEHICLES_DATA = [
         "pricing": {
             "local_8hrs_80km": 3500,
             "extra_km": 22,
-            "extra_hr": 380,
+            "extra_hr": 300,
             "outstation_km": 22,
             "min_km": 300,
             "driver_bata": 400
@@ -195,12 +195,12 @@ VEHICLES_DATA = [
         "description": "Eco-friendly Innova Hybrid combining fuel efficiency with comfort. Premium hybrid technology.",
         "features": ["Air Conditioned", "7 Seater", "Hybrid Engine", "Fuel Efficient", "Premium Interior"],
         "pricing": {
-            "local_8hrs_80km": 3800,
-            "extra_km": 24,
-            "extra_hr": 400,
-            "outstation_km": 24,
+            "local_8hrs_80km": 4200,
+            "extra_km": 28,
+            "extra_hr": 350,
+            "outstation_km": 25,
             "min_km": 300,
-            "driver_bata": 400
+            "driver_bata": 500
         }
     },
     {
@@ -214,11 +214,11 @@ VEHICLES_DATA = [
         "features": ["Air Conditioned", "7 Seater", "4x4 Available", "Premium SUV", "Leather Seats"],
         "pricing": {
             "local_8hrs_80km": 5500,
-            "extra_km": 30,
+            "extra_km": 50,
             "extra_hr": 500,
-            "outstation_km": 30,
+            "outstation_km": 45,
             "min_km": 300,
-            "driver_bata": 500
+            "driver_bata": 600
         }
     },
     {
@@ -233,7 +233,7 @@ VEHICLES_DATA = [
         "pricing": {
             "local_8hrs_80km": 4500,
             "extra_km": 22,
-            "extra_hr": 400,
+            "extra_hr": 300,
             "outstation_km": 20,
             "min_km": 300,
             "driver_bata": 500
@@ -250,9 +250,9 @@ VEHICLES_DATA = [
         "features": ["Air Conditioned", "12 Seater", "Push-back Seats", "Luggage Carrier", "Curtains"],
         "pricing": {
             "local_8hrs_80km": 5500,
-            "extra_km": 28,
+            "extra_km": 24,
             "extra_hr": 450,
-            "outstation_km": 25,
+            "outstation_km": 24,
             "min_km": 300,
             "driver_bata": 500
         }
@@ -267,10 +267,10 @@ VEHICLES_DATA = [
         "description": "Luxury 9-seater Tempo Traveller with premium interiors. Perfect for VIP group travel.",
         "features": ["Air Conditioned", "9 Seater", "Luxury Interior", "Sofa Seats", "LED TV", "Refrigerator"],
         "pricing": {
-            "local_8hrs_80km": 7000,
-            "extra_km": 35,
+            "local_8hrs_80km": 6500,
+            "extra_km": 30,
             "extra_hr": 500,
-            "outstation_km": 32,
+            "outstation_km": 30,
             "min_km": 300,
             "driver_bata": 600
         }
@@ -285,10 +285,10 @@ VEHICLES_DATA = [
         "description": "Force Urbania 16+1 seater for medium group travel. Modern design with premium comfort.",
         "features": ["Air Conditioned", "17 Seater", "Premium Interior", "Push-back Seats", "USB Charging"],
         "pricing": {
-            "local_8hrs_80km": 8500,
+            "local_8hrs_80km": 8000,
             "extra_km": 40,
             "extra_hr": 500,
-            "outstation_km": 38,
+            "outstation_km": 36,
             "min_km": 300,
             "driver_bata": 800
         }
@@ -303,10 +303,28 @@ VEHICLES_DATA = [
         "description": "Comfortable 21-seater mini bus for medium-sized groups. Great for corporate events.",
         "features": ["Air Conditioned", "21 Seater", "Push-back Seats", "Luggage Storage", "PA System"],
         "pricing": {
-            "local_8hrs_80km": 9000,
-            "extra_km": 42,
+            "local_8hrs_80km": 8000,
+            "extra_km": 34,
             "extra_hr": 600,
-            "outstation_km": 40,
+            "outstation_km": 34,
+            "min_km": 300,
+            "driver_bata": 800
+        }
+    },
+     {
+        "id": "bus-21",
+        "name": "21 Seater non-Bus",
+        "category": "bus",
+        "seats": 21,
+        "ac": True,
+        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/f_auto,q_auto,w_800/v1773990184/vehicles/bus-21/img_001.jpg",
+        "description": "Comfortable 21-seater mini bus for medium-sized groups. Great for corporate events.",
+        "features": ["Air Conditioned", "21 Seater", "Push-back Seats", "Luggage Storage", "PA System"],
+        "pricing": {
+            "local_8hrs_80km": 7500,
+            "extra_km": 30,
+            "extra_hr": 500,
+            "outstation_km": 30,
             "min_km": 300,
             "driver_bata": 800
         }
@@ -321,12 +339,30 @@ VEHICLES_DATA = [
         "description": "Spacious 25-seater bus ideal for group tours and corporate outings.",
         "features": ["Air Conditioned", "25 Seater", "Reclining Seats", "Overhead Storage", "Music System"],
         "pricing": {
-            "local_8hrs_80km": 10000,
-            "extra_km": 45,
+            "local_8hrs_80km": 9000,
+            "extra_km": 38,
             "extra_hr": 650,
-            "outstation_km": 42,
+            "outstation_km": 38,
             "min_km": 300,
-            "driver_bata": 900
+            "driver_bata": 800
+        }
+    },
+        {
+        "id": "bus-25",
+        "name": "25 Seater non-ac Bus",
+        "category": "bus",
+        "seats": 25,
+        "ac": True,
+        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/f_auto,q_auto,w_800/v1773990186/vehicles/bus-25/img_001.jpg",
+        "description": "Spacious 25-seater bus ideal for group tours and corporate outings.",
+        "features": ["Air Conditioned", "25 Seater", "Reclining Seats", "Overhead Storage", "Music System"],
+        "pricing": {
+            "local_8hrs_80km": 8500,
+            "extra_km": 34,
+            "extra_hr": 600,
+            "outstation_km": 34,
+            "min_km": 300,
+            "driver_bata": 800
         }
     },
     {
@@ -339,17 +375,35 @@ VEHICLES_DATA = [
         "description": "Large 33-seater bus for big group travel. Comfortable seating for long journeys.",
         "features": ["Air Conditioned", "33 Seater", "Reclining Seats", "Entertainment System", "Restroom"],
         "pricing": {
-            "local_8hrs_80km": 12000,
-            "extra_km": 50,
+            "local_8hrs_80km": 1000,
+            "extra_km": 44,
             "extra_hr": 700,
-            "outstation_km": 48,
+            "outstation_km": 44,
+            "min_km": 300,
+            "driver_bata": 1000
+        }
+    },
+        {
+        "id": "bus-33",
+        "name": "33 Seater non-ac Bus",
+        "category": "bus",
+        "seats": 33,
+        "ac": True,
+        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/f_auto,q_auto,w_800/v1773990187/vehicles/bus-33/img_001.jpg",
+        "description": "Large 33-seater bus for big group travel. Comfortable seating for long journeys.",
+        "features": ["Air Conditioned", "33 Seater", "Reclining Seats", "Entertainment System", "Restroom"],
+        "pricing": {
+            "local_8hrs_80km": 11000,
+            "extra_km": 40,
+            "extra_hr": 600,
+            "outstation_km": 40,
             "min_km": 300,
             "driver_bata": 1000
         }
     },
     {
         "id": "bus-45",
-        "name": "45 Seater Bus",
+        "name": "40/45/49  Seater Bus",
         "category": "bus",
         "seats": 45,
         "ac": True,
@@ -357,12 +411,12 @@ VEHICLES_DATA = [
         "description": "Extra-large 45-seater bus for school trips, weddings and large group events.",
         "features": ["Air Conditioned", "45 Seater", "Reclining Seats", "GPS Tracking", "First Aid Kit"],
         "pricing": {
-            "local_8hrs_80km": 15000,
+            "local_8hrs_80km": 13000,
             "extra_km": 55,
             "extra_hr": 800,
-            "outstation_km": 52,
+            "outstation_km": 55,
             "min_km": 300,
-            "driver_bata": 1200
+            "driver_bata": 1000
         }
     },
     {
@@ -375,11 +429,11 @@ VEHICLES_DATA = [
         "description": "Premium Volvo Coach for luxury long-distance travel. Multi-axle with advanced suspension.",
         "features": ["Air Conditioned", "45 Seater", "Volvo Multi-Axle", "Individual Reading Lights", "Charging Points"],
         "pricing": {
-            "local_8hrs_80km": 18000,
-            "extra_km": 65,
-            "extra_hr": 1000,
-            "outstation_km": 60,
-            "min_km": 300,
+            "local_8hrs_80km": 20000,
+            "extra_km": 75,
+            "extra_hr": 2000,
+            "outstation_km": 75,
+            "min_km": 400,
             "driver_bata": 1500
         }
     },
