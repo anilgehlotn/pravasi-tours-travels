@@ -243,7 +243,7 @@ export default function SouthIndiaHero() {
             }}
             onMouseEnter={() => setSecondaryHover(true)}
             onMouseLeave={() => setSecondaryHover(false)}
-            onClick={() => alert("Plan My Trip clicked")}
+             onClick={() => window.open("https://pravasi-tours-travels-ai.lovable.app/plan", "_blank")}
           >
             Plan My Trip
           </button>
