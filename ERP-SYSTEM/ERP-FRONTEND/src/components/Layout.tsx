@@ -7,6 +7,7 @@ import {
   FileText,
   TrendingUp,
   Settings,
+  LogOut,
 } from "lucide-react";
 
 const navItems = [
@@ -19,7 +20,7 @@ const navItems = [
   { to: "/settings", label: "Settings", icon: Settings },
 ];
 
-const Layout = () => {
+const Layout = ({ onLogout }: { onLogout?: () => void }) => {
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
@@ -58,11 +59,23 @@ const Layout = () => {
         </nav>
 
         {/* User / Admin */}
-        <div className="px-5 py-4 border-t border-gray-200 flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-semibold text-sm">
-            A
+        <div className="px-5 py-4 border-t border-gray-200 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-semibold text-sm">
+              A
+            </div>
+            <span className="text-sm font-medium text-gray-700">Admin</span>
           </div>
-          <span className="text-sm font-medium text-gray-700">Admin</span>
+          
+          {onLogout && (
+            <button 
+              onClick={onLogout}
+              className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+              title="Logout"
+            >
+              <LogOut size={18} />
+            </button>
+          )}
         </div>
       </aside>
 

@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useState } from "react";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
 import Bookings from "./pages/Bookings";
@@ -7,13 +8,35 @@ import Vehicles from "./pages/Vehicles";
 import Billing from "./pages/Billing";
 import Revenue from "./pages/Revenue";
 import Settings from "./pages/Settings";
+import Login from "./pages/Login";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("admin_token"));
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        {/* Default redirect */}
+        <Route path="/" element={<Navigate to={isLoggedIn ? "/dashboard" : "/login"} replace />} />
+
+        {/* Login route */}
+        <Route
+          path="/login"
+          element={
+            isLoggedIn
+              ? <Navigate to="/dashboard" replace />
+              : <Login onLogin={() => setIsLoggedIn(true)} />
+          }
+        />
+
+        {/* Protected routes */}
+        <Route
+          element={
+            isLoggedIn
+              ? <Layout onLogout={() => { localStorage.removeItem("admin_token"); setIsLoggedIn(false); }} />
+              : <Navigate to="/login" replace />
+          }
+        >
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/bookings" element={<Bookings />} />
           <Route path="/drivers" element={<Drivers />} />
@@ -22,6 +45,9 @@ function App() {
           <Route path="/revenue" element={<Revenue />} />
           <Route path="/settings" element={<Settings />} />
         </Route>
+
+        {/* Catch-all */}
+        <Route path="*" element={<Navigate to={isLoggedIn ? "/dashboard" : "/login"} replace />} />
       </Routes>
     </BrowserRouter>
   );
