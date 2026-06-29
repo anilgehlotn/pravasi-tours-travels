@@ -29,6 +29,7 @@ class BookingCreate(BaseModel):
     gst_amount: float = 0
     total_amount: float = 0
     status: str = "ongoing"
+    payment_status: Optional[str] = "pending"
 
 class BookingUpdate(BaseModel):
     booking_ref: Optional[str] = None
@@ -50,7 +51,10 @@ class BookingUpdate(BaseModel):
     gst_amount: Optional[float] = None
     total_amount: Optional[float] = None
     status: Optional[str] = None
+    payment_status: Optional[str] = None
 
+
+from postgrest.exceptions import APIError
 
 # --- Helpers ---
 
@@ -80,6 +84,8 @@ def enrich_booking(booking: dict, vehicles: dict, drivers: dict) -> dict:
     did = booking.get("driver_id")
     booking["vehicle_name"] = vehicles.get(vid, "—") if vid else "—"
     booking["driver_name"] = drivers.get(did, "—") if did else "—"
+    if "payment_status" not in booking:
+        booking["payment_status"] = "pending"
     return booking
 
 
@@ -137,7 +143,15 @@ def create_booking(booking: BookingCreate, admin: dict = Depends(get_current_adm
     data["gst_amount"] = int(data.get("gst_amount") or 0)
     data["total_amount"] = int(data.get("total_amount") or 0)
     
-    response = supabase.table("bookings").insert(data).execute()
+    try:
+        response = supabase.table("bookings").insert(data).execute()
+    except APIError as e:
+        # Fallback if payment_status column does not exist in Supabase table
+        if "payment_status" in str(e):
+            data.pop("payment_status", None)
+            response = supabase.table("bookings").insert(data).execute()
+        else:
+            raise HTTPException(status_code=500, detail=str(e))
     
     if not response.data:
         raise HTTPException(status_code=500, detail="Failed to create booking")
@@ -155,7 +169,18 @@ def update_booking(id: str, booking_update: BookingUpdate, admin: dict = Depends
     if not update_data:
         raise HTTPException(status_code=400, detail="No fields provided for update")
     
-    response = supabase.table("bookings").update(update_data).eq("id", id).execute()
+    try:
+        response = supabase.table("bookings").update(update_data).eq("id", id).execute()
+    except APIError as e:
+        # Fallback if payment_status column does not exist in Supabase table
+        if "payment_status" in str(e) and "payment_status" in update_data:
+            update_data.pop("payment_status", None)
+            if not update_data:
+                # If payment_status was the only update, return the booking as is
+                return get_booking(id)
+            response = supabase.table("bookings").update(update_data).eq("id", id).execute()
+        else:
+            raise HTTPException(status_code=500, detail=str(e))
     
     if not response.data:
         raise HTTPException(status_code=404, detail="Booking not found or update failed")
