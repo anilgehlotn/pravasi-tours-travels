@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { memo } from "react";
 import { motion } from "framer-motion";
 import { Users, Snowflake, ArrowRight, IndianRupee } from "lucide-react";
+import VehicleImageCarousel from "./VehicleImageCarousel";
 
 // Memoize to prevent unnecessary re-renders
 const VehicleCard = ({ vehicle, index = 0 }) => {
@@ -32,16 +33,11 @@ const VehicleCard = ({ vehicle, index = 0 }) => {
     >
       {/* Image - Optimized with width/height and better formats */}
       <div className="relative overflow-hidden aspect-[16/10]">
-        <img
-          src={image}
+        <VehicleImageCarousel 
+          images={vehicle.images?.length ? vehicle.images : image ? [image] : []}
           alt={name}
-          width="400"
-          height="250"
-          className="vehicle-card-image w-full h-full object-cover"
-          loading="lazy"
-          decoding="async"
         />
-        <div className="absolute top-4 right-4">
+        <div className="absolute top-4 right-4 pointer-events-none">
           <div className="price-tag px-3 py-1.5 rounded-full text-xs font-bold shadow-md">
             <span className="flex items-center gap-0.5">
               <IndianRupee className="w-3 h-3" />
@@ -50,7 +46,7 @@ const VehicleCard = ({ vehicle, index = 0 }) => {
           </div>
         </div>
         {/* Overlay on hover */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
       </div>
 
       {/* Content */}
