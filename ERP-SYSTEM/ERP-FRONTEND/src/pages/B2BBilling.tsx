@@ -8,7 +8,7 @@ import {
 import { getBusinessInfo } from "../utils/businessInfo";
 
 // ─── Config ───────────────────────────────────────────────────────────────────
-const API   = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
+const API   = import.meta.env.VITE_API_URL ?? (import.meta.env.PROD ? "https://pravasi-tours-travels-4.onrender.com" : "http://localhost:8000");
 const tok   = () => localStorage.getItem("admin_token") ?? "";
 const authH = () => ({ "Content-Type": "application/json", Authorization: `Bearer ${tok()}` });
 

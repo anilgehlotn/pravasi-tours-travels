@@ -42,7 +42,7 @@ interface Booking {
   created_at?: string;
 }
 
-const API = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
+const API = import.meta.env.VITE_API_URL ?? (import.meta.env.PROD ? "https://pravasi-tours-travels-4.onrender.com" : "http://localhost:8000");
 const token = () => localStorage.getItem("admin_token") ?? "";
 
 // ─── Number to Words (INR) ───────────────────────────────────────────────────

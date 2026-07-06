@@ -11,7 +11,7 @@ interface Vehicle {
   driver?: string;
 }
 
-const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8001";
+const API_BASE = import.meta.env.VITE_API_URL ?? (import.meta.env.PROD ? "https://pravasi-tours-travels-4.onrender.com" : "http://localhost:8000");
 
 const Vehicles = () => {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);

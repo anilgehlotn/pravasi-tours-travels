@@ -37,7 +37,7 @@ interface Booking {
   driver_name?: string;
 }
 
-const API = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
+const API = import.meta.env.VITE_API_URL ?? (import.meta.env.PROD ? "https://pravasi-tours-travels-4.onrender.com" : "http://localhost:8000");
 
 const TRIP_TYPES = [
   { value: "outstation_round", label: "Outstation Round Trip" },
