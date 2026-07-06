@@ -6,7 +6,7 @@ import Bookings from "./pages/Bookings";
 import Drivers from "./pages/Drivers";
 import Vehicles from "./pages/Vehicles";
 import Billing from "./pages/Billing";
-import Revenue from "./pages/Revenue";
+import B2BBilling from "./pages/B2BBilling";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 
@@ -42,7 +42,7 @@ function App() {
           <Route path="/drivers" element={<Drivers />} />
           <Route path="/vehicles" element={<Vehicles />} />
           <Route path="/billing" element={<Billing />} />
-          <Route path="/revenue" element={<Revenue />} />
+          <Route path="/revenue" element={<B2BBilling />} />
           <Route path="/settings" element={<Settings />} />
         </Route>
 

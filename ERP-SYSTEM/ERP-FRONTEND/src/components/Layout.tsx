@@ -5,7 +5,7 @@ import {
   Users,
   Car,
   FileText,
-  TrendingUp,
+  Building2,
   Settings,
   LogOut,
 } from "lucide-react";
@@ -16,7 +16,7 @@ const navItems = [
   { to: "/drivers", label: "Drivers", icon: Users },
   { to: "/vehicles", label: "Vehicles", icon: Car },
   { to: "/billing", label: "Billing & Quotation", icon: FileText },
-  { to: "/revenue", label: "Revenue & Profit", icon: TrendingUp },
+  { to: "/revenue", label: "B2B Billing", icon: Building2 },
   { to: "/settings", label: "Settings", icon: Settings },
 ];
 

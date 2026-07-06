@@ -4,18 +4,16 @@ import { useEffect, useState, useCallback } from "react";
 interface Vehicle {
   id: string;
   name: string;
+  seats: number;
   rate_per_km: number;
   rate_local_8hr: number;
-}
-interface Driver {
-  id: string;
-  name: string;
 }
 interface Booking {
   id: string;
   booking_ref?: string;
   customer_name: string;
   customer_phone: string;
+  customer_address?: string;
   whatsapp_number?: string;
   trip_type: string;
   from_city: string;
@@ -23,20 +21,22 @@ interface Booking {
   travel_date: string;
   return_date?: string;
   vehicle_name?: string;
-  driver_name?: string;
+  vehicle_type?: string;
+  vehicle_number?: string;
   estimated_km?: number;
-  rate_per_km?: number;
   base_fare?: number;
   toll?: number;
   parking?: number;
-  fuel?: number;
+  driver_batta?: number;
+  advance_amount?: number;
+  permit_charges?: number;
   gst_amount?: number;
   total_amount?: number;
   status: string;
   created_at?: string;
 }
 
-const API = import.meta.env.VITE_API_URL ?? "http://localhost:8001";
+const API = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
 
 const TRIP_TYPES = [
   { value: "outstation_round", label: "Outstation Round Trip" },
@@ -47,7 +47,22 @@ const TRIP_TYPES = [
 
 const tripLabel = (v: string) => TRIP_TYPES.find((t) => t.value === v)?.label ?? v;
 
-// --- helpers ---
+// Derive vehicle type label from name / seats
+function deriveVehicleType(name: string, seats: number): string {
+  const n = name.toLowerCase();
+  if (n.includes("sleeper")) return "Sleeper Coach";
+  if (n.includes("volvo")) return "Volvo Coach";
+  if (n.includes("urbania")) return "Luxury Van";
+  if (seats >= 40) return "Large Bus";
+  if (seats >= 25) return "Bus";
+  if (seats >= 17) return "Mini Bus";
+  if (seats >= 12) return "Tempo Traveller";
+  if (seats >= 9) return "Luxury Van";
+  if (n.includes("innova") || n.includes("fortuner")) return "SUV";
+  return "Sedan";
+}
+
+// helpers
 const fmt = (n?: number | null) => "₹" + (n ?? 0).toLocaleString("en-IN", { maximumFractionDigits: 0 });
 const token = () => localStorage.getItem("admin_token") ?? "";
 
@@ -55,7 +70,6 @@ const token = () => localStorage.getItem("admin_token") ?? "";
 const Bookings = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
-  const [drivers, setDrivers] = useState<Driver[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
@@ -67,6 +81,7 @@ const Bookings = () => {
   const emptyForm = {
     customer_name: "",
     customer_phone: "",
+    customer_address: "",
     customer_whatsapp: "",
     trip_type: "outstation_round",
     from_city: "",
@@ -75,13 +90,15 @@ const Bookings = () => {
     return_date: "",
     vehicle_id: "",
     vehicle_name: "",
-    driver_id: "",
-    driver_name: "",
+    vehicle_type: "",
+    vehicle_number: "",
     estimated_km: 0,
     rate_per_km: 0,
     toll: 0,
     parking: 0,
-    fuel: 0,
+    driver_batta: 0,
+    advance_amount: 0,
+    permit_charges: 0,
     apply_gst: false,
     base_fare: 0,
     gst: 0,
@@ -109,15 +126,15 @@ const Bookings = () => {
   useEffect(() => {
     fetchBookings();
     fetch(`${API}/api/vehicles`).then((r) => r.json()).then(setVehicles).catch(() => {});
-    fetch(`${API}/api/drivers`).then((r) => r.json()).then(setDrivers).catch(() => {});
   }, [fetchBookings]);
 
-  // Auto-calc
+  // Auto-calc base fare and total
   useEffect(() => {
     if (showModal) {
       const baseFare = manualBase ? form.base_fare : form.estimated_km * form.rate_per_km;
       const gst = form.apply_gst ? Math.round(baseFare * 0.05) : 0;
-      const total = manualTotal ? form.total : baseFare + form.toll + form.parking + form.fuel + gst;
+      const extras = form.toll + form.parking + form.driver_batta + form.permit_charges;
+      const total = manualTotal ? form.total : baseFare + extras + gst;
 
       setForm((p) => ({
         ...p,
@@ -132,7 +149,8 @@ const Bookings = () => {
     form.rate_per_km,
     form.toll,
     form.parking,
-    form.fuel,
+    form.driver_batta,
+    form.permit_charges,
     form.apply_gst,
     manualBase,
     manualTotal,
@@ -148,16 +166,12 @@ const Bookings = () => {
         ...p,
         vehicle_id: v.id,
         vehicle_name: v.name,
+        vehicle_type: deriveVehicleType(v.name, v.seats),
         rate_per_km: v.rate_per_km,
       }));
       setManualBase(false);
       setManualTotal(false);
     }
-  };
-
-  const selectDriver = (id: string) => {
-    const d = drivers.find((x) => x.id === id);
-    if (d) setForm((p) => ({ ...p, driver_id: d.id, driver_name: d.name }));
   };
 
   const openModal = () => {
@@ -174,6 +188,7 @@ const Bookings = () => {
       const body = {
         customer_name: form.customer_name,
         customer_phone: form.customer_phone,
+        customer_address: form.customer_address || null,
         whatsapp_number: form.customer_whatsapp || null,
         trip_type: form.trip_type,
         from_city: form.from_city,
@@ -181,11 +196,15 @@ const Bookings = () => {
         travel_date: form.travel_date,
         return_date: form.return_date || null,
         vehicle_id: form.vehicle_id || null,
-        driver_id: form.driver_id || null,
+        vehicle_name: form.vehicle_name || null,
+        vehicle_type: form.vehicle_type || null,
+        vehicle_number: form.vehicle_number || null,
         estimated_km: form.estimated_km,
         toll: form.toll,
         parking: form.parking,
-        fuel: form.fuel,
+        driver_batta: form.driver_batta || null,
+        advance_amount: form.advance_amount || null,
+        permit_charges: form.permit_charges || null,
         base_fare: form.base_fare,
         gst_amount: form.gst,
         total_amount: form.total,
@@ -247,6 +266,7 @@ const Bookings = () => {
               className="border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <option value="all">All Statuses</option>
+              <option value="ongoing">Ongoing</option>
               <option value="confirmed">Confirmed</option>
               <option value="completed">Completed</option>
               <option value="cancelled">Cancelled</option>
@@ -275,7 +295,7 @@ const Bookings = () => {
             <table className="w-full text-sm whitespace-nowrap">
               <thead>
                 <tr className="border-b border-gray-100">
-                  {["Customer", "Phone", "Trip", "Vehicle", "Driver", "From", "To", "Date", "KM", "Base", "Extras", "Total", "Status"].map(
+                  {["Ref", "Customer", "Phone", "Trip", "Vehicle", "Route", "Date", "KM", "Base Fare", "Extras", "Total", "Status"].map(
                     (h) => (
                       <th key={h} className="text-left text-gray-500 font-medium px-4 py-3 first:pl-6">
                         {h}
@@ -287,18 +307,22 @@ const Bookings = () => {
               <tbody>
                 {(filtered ?? []).map((b) => (
                   <tr key={b.id} className="border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">
-                    <td className="px-4 py-3 pl-6 text-gray-800 font-medium">{b.customer_name ?? "—"}</td>
+                    <td className="px-4 py-3 pl-6 text-indigo-600 font-mono text-xs font-semibold">{b.booking_ref ?? "—"}</td>
+                    <td className="px-4 py-3 text-gray-800 font-medium">{b.customer_name ?? "—"}</td>
                     <td className="px-4 py-3 text-gray-600">{b.customer_phone ?? "—"}</td>
                     <td className="px-4 py-3 text-gray-600">{tripLabel(b.trip_type ?? "")}</td>
-                    <td className="px-4 py-3 text-gray-600">{b.vehicle_name ?? "—"}</td>
-                    <td className="px-4 py-3 text-gray-600">{b.driver_name ?? "—"}</td>
-                    <td className="px-4 py-3 text-gray-600">{b.from_city ?? "—"}</td>
-                    <td className="px-4 py-3 text-gray-600">{b.to_city ?? "—"}</td>
-                    <td className="px-4 py-3 text-gray-600">{b.travel_date ?? "—"}</td>
+                    <td className="px-4 py-3 text-gray-600">
+                      <div>{b.vehicle_name ?? "—"}</div>
+                      {b.vehicle_number && <div className="text-[10px] text-gray-400 font-mono">{b.vehicle_number}</div>}
+                    </td>
+                    <td className="px-4 py-3 text-gray-600">
+                      {b.from_city ?? "—"}{b.to_city ? ` → ${b.to_city}` : ""}
+                    </td>
+                    <td className="px-4 py-3 text-gray-600 font-mono text-xs">{b.travel_date ?? "—"}</td>
                     <td className="px-4 py-3 text-gray-700">{b.estimated_km ?? 0}</td>
                     <td className="px-4 py-3 text-gray-700">{fmt(b.base_fare)}</td>
                     <td className="px-4 py-3 text-gray-600 text-xs">
-                      T:{fmt(b.toll)} P:{fmt(b.parking)} F:{fmt(b.fuel)} G:{fmt(b.gst_amount)}
+                      T:{fmt(b.toll)} P:{fmt(b.parking)} B:{fmt(b.driver_batta)} G:{fmt(b.gst_amount)}
                     </td>
                     <td className="px-4 py-3 text-gray-900 font-semibold">{fmt(b.total_amount)}</td>
                     <td className="px-4 py-3">
@@ -343,7 +367,7 @@ const Bookings = () => {
             </div>
 
             <div className="px-6 py-5 space-y-5 max-h-[75vh] overflow-y-auto">
-              {/* Customer */}
+              {/* Customer Details */}
               <Section title="Customer Details">
                 <Row>
                   <Input label="Customer Name *" value={form.customer_name} onChange={(v) => set("customer_name", v)} />
@@ -351,10 +375,11 @@ const Bookings = () => {
                 </Row>
                 <Row>
                   <Input label="WhatsApp Number" value={form.customer_whatsapp} onChange={(v) => set("customer_whatsapp", v)} />
+                  <Input label="Customer Address" value={form.customer_address} onChange={(v) => set("customer_address", v)} />
                 </Row>
               </Section>
 
-              {/* Trip */}
+              {/* Trip Details */}
               <Section title="Trip Details">
                 <Row>
                   <Select label="Trip Type" value={form.trip_type} onChange={(v) => set("trip_type", v)} options={TRIP_TYPES.map((t) => ({ value: t.value, label: t.label }))} />
@@ -369,24 +394,21 @@ const Bookings = () => {
                 </Row>
               </Section>
 
-              {/* Vehicle & Driver */}
-              <Section title="Vehicle & Driver">
+              {/* Vehicle */}
+              <Section title="Vehicle">
                 <Row>
                   <Select
-                    label="Vehicle"
+                    label="Select Vehicle"
                     value={form.vehicle_id}
                     onChange={selectVehicle}
                     options={vehicles.map((v) => ({ value: v.id, label: `${v.name} — ₹${v.rate_per_km}/km` }))}
-                    placeholder="Select vehicle"
+                    placeholder="Choose a vehicle"
                   />
-                  <Select
-                    label="Assign Driver"
-                    value={form.driver_id}
-                    onChange={selectDriver}
-                    options={drivers.map((d) => ({ value: d.id, label: d.name }))}
-                    placeholder="Select driver"
-                  />
+                  <Input label="Vehicle Number (Reg. Plate)" value={form.vehicle_number} onChange={(v) => set("vehicle_number", v)} />
                 </Row>
+                {form.vehicle_type && (
+                  <p className="text-xs text-gray-400">Vehicle type: <span className="font-medium text-gray-600">{form.vehicle_type}</span></p>
+                )}
               </Section>
 
               {/* Pricing */}
@@ -398,7 +420,13 @@ const Bookings = () => {
                 <Row>
                   <NumInput label="Toll (₹)" value={form.toll} onChange={(v) => { set("toll", v); setManualTotal(false); }} />
                   <NumInput label="Parking (₹)" value={form.parking} onChange={(v) => { set("parking", v); setManualTotal(false); }} />
-                  <NumInput label="Fuel (₹)" value={form.fuel} onChange={(v) => { set("fuel", v); setManualTotal(false); }} />
+                </Row>
+                <Row>
+                  <NumInput label="Driver Batta (₹)" value={form.driver_batta} onChange={(v) => { set("driver_batta", v); setManualTotal(false); }} />
+                  <NumInput label="Inter-State Permit (₹)" value={form.permit_charges} onChange={(v) => { set("permit_charges", v); setManualTotal(false); }} />
+                </Row>
+                <Row>
+                  <NumInput label="Advance Payment (₹)" value={form.advance_amount} onChange={(v) => set("advance_amount", v)} />
                 </Row>
                 <div className="flex items-center gap-2 mt-1">
                   <label className="relative inline-flex items-center cursor-pointer">
@@ -426,7 +454,8 @@ const Bookings = () => {
                   />
                   <FareRow label="Toll" value={form.toll} onChange={(v) => { set("toll", v); setManualTotal(false); }} />
                   <FareRow label="Parking" value={form.parking} onChange={(v) => { set("parking", v); setManualTotal(false); }} />
-                  <FareRow label="Fuel" value={form.fuel} onChange={(v) => { set("fuel", v); setManualTotal(false); }} />
+                  <FareRow label="Driver Batta" value={form.driver_batta} onChange={(v) => { set("driver_batta", v); setManualTotal(false); }} />
+                  <FareRow label="Inter-State Permit" value={form.permit_charges} onChange={(v) => { set("permit_charges", v); setManualTotal(false); }} />
                   <FareRow label="GST (5%)" value={form.gst} onChange={(v) => set("gst", v)} />
                   <div className="border-t border-gray-200 pt-3">
                     <FareRow
@@ -438,6 +467,15 @@ const Bookings = () => {
                       bold
                     />
                   </div>
+                  {form.advance_amount > 0 && (
+                    <div className="border-t border-gray-200 pt-3">
+                      <FareRow label="Advance Paid" value={form.advance_amount} onChange={(v) => set("advance_amount", v)} />
+                      <div className="flex items-center justify-between mt-2">
+                        <span className="text-sm font-bold text-indigo-700">Balance Due</span>
+                        <span className="text-sm font-bold text-indigo-700">₹{(form.total - form.advance_amount).toLocaleString("en-IN")}</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </Section>
             </div>
