@@ -34,6 +34,7 @@ interface Booking {
   total_amount?: number;
   status: string;
   created_at?: string;
+  driver_name?: string;
 }
 
 const API = import.meta.env.VITE_API_URL ?? "http://localhost:8000";

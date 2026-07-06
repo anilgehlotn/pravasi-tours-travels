@@ -28,6 +28,7 @@ interface Booking {
   driver_batta?: number;
   advance_amount?: number;
   permit_charges?: number;
+  driver_name?: string;
   extra_hours?: number;
   extra_hours_rate?: number;
   extra_kms?: number;
@@ -207,7 +208,6 @@ function generateInvoice(b: Booking) {
   const C2 = { x: ML + 72,   w: 72 };
   const C3 = { x: ML + 144,  w: 36 };
   const ROW_H = 7;
-  const tableTop = y;
 
   // Section label
   doc.setFont("helvetica", "bold");
