@@ -10,6 +10,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import axios from "axios";
+import VehicleImageCarousel from "../components/VehicleImageCarousel";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -19,6 +20,8 @@ export default function VehicleDetailPage() {
   const [vehicle, setVehicle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [quoteLoading, setQuoteLoading] = useState(false);
+  const [isAcMode, setIsAcMode] = useState(true);
+  const [selectedVariant, setSelectedVariant] = useState(null);
 
   const [form, setForm] = useState({
     from_location: "",
@@ -90,7 +93,12 @@ export default function VehicleDetailPage() {
 
   if (!vehicle) return null;
 
-  const { pricing } = vehicle;
+  const { pricing, pricing_non_ac, pricing_9_seater, pricing_12_seater } = vehicle;
+  
+  let currentPricing = pricing;
+  if (pricing_non_ac && !isAcMode) currentPricing = pricing_non_ac;
+  if (pricing_12_seater && selectedVariant === '12') currentPricing = pricing_12_seater;
+  if (pricing_9_seater && selectedVariant === '9') currentPricing = pricing_9_seater;
 
   return (
     <div className="pt-24 sm:pt-28 pb-20 bg-[#F8FAFC]" data-testid="vehicle-detail-page">
@@ -112,11 +120,10 @@ export default function VehicleDetailPage() {
             animate={{ opacity: 1, x: 0 }}
             className="relative"
           >
-            <div className="rounded-3xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.08)]">
-              <img
-                src={vehicle.image}
+            <div className="rounded-3xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.08)] aspect-[16/10]">
+              <VehicleImageCarousel
+                images={vehicle.images?.length ? vehicle.images : vehicle.image ? [vehicle.image] : []}
                 alt={vehicle.name}
-                className="w-full aspect-[16/10] object-cover"
               />
             </div>
             <div className="flex flex-wrap gap-2 mt-4">
@@ -159,15 +166,59 @@ export default function VehicleDetailPage() {
 
             {/* Pricing Table */}
             <div className="bg-white rounded-2xl p-6 border border-gray-100 mb-8">
-              <h3 className="text-sm font-bold text-[#0F172A] mb-4 uppercase tracking-wider">Pricing Details</h3>
+              <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between mb-4 gap-3">
+                <h3 className="text-sm font-bold text-[#0F172A] uppercase tracking-wider">Pricing Details</h3>
+                
+                <div className="flex flex-wrap gap-2">
+                  {pricing_non_ac && (
+                    <div className="flex bg-gray-100 rounded-full p-1">
+                      <button
+                        onClick={() => setIsAcMode(true)}
+                        className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${isAcMode ? 'bg-white shadow-sm text-[#1E3A8A]' : 'text-[#64748B]'}`}
+                      >
+                        AC
+                      </button>
+                      <button
+                        onClick={() => setIsAcMode(false)}
+                        className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${!isAcMode ? 'bg-white shadow-sm text-[#1E3A8A]' : 'text-[#64748B]'}`}
+                      >
+                        Non AC
+                      </button>
+                    </div>
+                  )}
+
+                  {vehicle.id === 'urbania' && (
+                    <div className="flex bg-gray-100 rounded-full p-1">
+                      <button
+                        onClick={() => setSelectedVariant('9')}
+                        className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${selectedVariant === '9' ? 'bg-white shadow-sm text-[#1E3A8A]' : 'text-[#64748B]'}`}
+                      >
+                        9 Seater
+                      </button>
+                      <button
+                        onClick={() => setSelectedVariant('12')}
+                        className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${selectedVariant === '12' ? 'bg-white shadow-sm text-[#1E3A8A]' : 'text-[#64748B]'}`}
+                      >
+                        12 Seater
+                      </button>
+                      <button
+                        onClick={() => setSelectedVariant('16')}
+                        className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${(!selectedVariant || selectedVariant === '16') ? 'bg-white shadow-sm text-[#1E3A8A]' : 'text-[#64748B]'}`}
+                      >
+                        16 Seater
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
               <div className="space-y-3">
                 {[
-                  { label: "8hrs / 80km Package", value: `₹${pricing.local_8hrs_80km.toLocaleString("en-IN")}` },
-                  { label: "Extra KM Charge", value: `₹${pricing.extra_km}/km` },
-                  { label: "Extra Hour Charge", value: `₹${pricing.extra_hr}/hr` },
-                  { label: "Outstation Rate", value: `₹${pricing.outstation_km}/km` },
-                  { label: "Minimum KM (Outstation)", value: `${pricing.min_km} km` },
-                  { label: "Driver Bata / Day", value: `₹${pricing.driver_bata}` },
+                  { label: "8hrs / 80km Package", value: `₹${currentPricing.local_8hrs_80km.toLocaleString("en-IN")}` },
+                  { label: "Extra KM Charge", value: `₹${currentPricing.extra_km}/km` },
+                  { label: "Extra Hour Charge", value: `₹${currentPricing.extra_hr}/hr` },
+                  { label: "Outstation Rate", value: `₹${currentPricing.outstation_km}/km` },
+                  { label: "Minimum KM (Outstation)", value: `${currentPricing.min_km} km` },
+                  { label: "Driver Bata / Day", value: `₹${currentPricing.driver_bata}` },
                 ].map((row, i) => (
                   <div key={i} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
                     <span className="text-sm text-[#64748B]">{row.label}</span>
