@@ -51,6 +51,10 @@ The ERP-SYSTEM admin dashboard:
 | Username | `admin` |
 | Password | `pravasi@123` |
 
+## Known issues
+
+- [Authentication not enforced on backend write endpoints](docs/known-issues.md) — the backend's API-key mechanism exists but is not wired to any route.
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
