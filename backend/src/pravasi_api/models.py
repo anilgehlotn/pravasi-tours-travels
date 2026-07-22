@@ -1,4 +1,3 @@
-from typing import Optional
 
 from pydantic import BaseModel
 
@@ -8,19 +7,19 @@ class QuotationRequest(BaseModel):
     from_location: str
     to_location: str
     travel_date: str
-    return_date: Optional[str] = None
+    return_date: str | None = None
     travelers: int = 1
     trip_type: str = "outstation"
-    distance_km: Optional[float] = None
-    duration_text: Optional[str] = None
-    customer_name: Optional[str] = None
-    customer_phone: Optional[str] = None
-    customer_email: Optional[str] = None
+    distance_km: float | None = None
+    duration_text: str | None = None
+    customer_name: str | None = None
+    customer_phone: str | None = None
+    customer_email: str | None = None
 
 
 class CallbackRequest(BaseModel):
     name: str
     phone: str
-    email: Optional[str] = None
-    message: Optional[str] = None
-    vehicle_id: Optional[str] = None
+    email: str | None = None
+    message: str | None = None
+    vehicle_id: str | None = None

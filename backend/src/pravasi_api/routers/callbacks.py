@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from fastapi import APIRouter
 
@@ -19,7 +19,7 @@ async def request_callback(req: CallbackRequest):
         "message": req.message,
         "vehicle_id": req.vehicle_id,
         "status": "pending",
-        "created_at": datetime.now(timezone.utc).isoformat()
+        "created_at": datetime.now(UTC).isoformat()
     }
     await db.callbacks.insert_one(callback_doc)
     callback_doc.pop("_id", None)

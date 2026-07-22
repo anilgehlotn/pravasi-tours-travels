@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from fastapi import APIRouter, HTTPException
 
@@ -19,7 +19,7 @@ async def confirm_booking(quote_id: str):
         "quotation_id": quote_id,
         **{k: v for k, v in quotation.items() if k != "id"},
         "status": "confirmed",
-        "booked_at": datetime.now(timezone.utc).isoformat()
+        "booked_at": datetime.now(UTC).isoformat()
     }
     await db.bookings.insert_one(booking)
     booking.pop("_id", None)

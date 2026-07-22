@@ -29,7 +29,7 @@ def calculate_local_price(distance_km: float, pricing: dict) -> dict:
     """Calculate local package (8hrs/80km) price."""
     base_price = pricing["local_8hrs_80km"]
     extra_km_cost = 0
-    extra_km = 0
+    extra_km: float = 0
 
     if distance_km > 80:
         extra_km = round(distance_km - 80, 1)
@@ -50,6 +50,14 @@ def calculate_local_price(distance_km: float, pricing: dict) -> dict:
             "extra_km_rate": pricing["extra_km"],
             "extra_km_cost": extra_km_cost,
             "driver_bata": driver_cost,
-            "calculation": f"Base ₹{base_price}" + (f" + {extra_km} extra km x ₹{pricing['extra_km']}/km = ₹{extra_km_cost}" if extra_km > 0 else "") + f" + Driver ₹{driver_cost}"
+            "calculation": (
+                f"Base ₹{base_price}"
+                + (
+                    f" + {extra_km} extra km x ₹{pricing['extra_km']}/km = ₹{extra_km_cost}"
+                    if extra_km > 0
+                    else ""
+                )
+                + f" + Driver ₹{driver_cost}"
+            )
         }
     }

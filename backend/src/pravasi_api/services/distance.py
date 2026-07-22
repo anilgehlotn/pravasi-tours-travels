@@ -1,6 +1,6 @@
 import logging
-from datetime import datetime, timezone
-from typing import Optional, TypedDict
+from datetime import UTC, datetime
+from typing import TypedDict
 
 import httpx
 
@@ -29,7 +29,7 @@ def _make_cache_key(origin: str, destination: str) -> str:
     return f"{min(a, b)}|{max(a, b)}"
 
 
-def _get_hardcoded_fallback(origin: str, destination: str) -> Optional[int]:
+def _get_hardcoded_fallback(origin: str, destination: str) -> int | None:
     """Look up a route in the hardcoded COMMON_ROUTES dictionary."""
     o = origin.lower().strip()
     d = destination.lower().strip()
@@ -39,7 +39,7 @@ def _get_hardcoded_fallback(origin: str, destination: str) -> Optional[int]:
     return None
 
 
-async def _fetch_from_google_api(origin: str, destination: str) -> Optional[DistanceResult]:
+async def _fetch_from_google_api(origin: str, destination: str) -> DistanceResult | None:
     """Call Google Maps Distance Matrix API. Returns result dict or None on failure."""
     if not GOOGLE_API_KEY:
         return None
@@ -68,9 +68,15 @@ async def _fetch_from_google_api(origin: str, destination: str) -> Optional[Dist
                         "status": "OK"
                     }
                 else:
-                    logger.error(f"Google Maps element status: {element.get('status')} for {origin} -> {destination}")
+                    logger.error(
+                        f"Google Maps element status: {element.get('status')} "
+                        f"for {origin} -> {destination}"
+                    )
             else:
-                logger.error(f"Google Maps API status: {data.get('status')}, error: {data.get('error_message', '')} for {origin} -> {destination}")
+                logger.error(
+                    f"Google Maps API status: {data.get('status')}, "
+                    f"error: {data.get('error_message', '')} for {origin} -> {destination}"
+                )
     except Exception as e:
         logger.error(f"Google Maps API exception for {origin} -> {destination}: {e}")
 
@@ -90,7 +96,9 @@ async def get_distance_from_google(origin: str, destination: str) -> DistanceRes
     try:
         cached = await db.distances.find_one({"cache_key": cache_key}, {"_id": 0})
         if cached:
-            logger.info(f"Distance cache HIT for {origin} -> {destination}: {cached['distance_km']} km")
+            logger.info(
+                f"Distance cache HIT for {origin} -> {destination}: {cached['distance_km']} km"
+            )
             return {
                 "distance_km": cached["distance_km"],
                 "duration_text": cached.get("duration_text", ""),
@@ -102,7 +110,10 @@ async def get_distance_from_google(origin: str, destination: str) -> DistanceRes
     # ── Tier 2: Google Maps API ──
     google_result = await _fetch_from_google_api(origin, destination)
     if google_result:
-        logger.info(f"Google Maps OK for {origin} -> {destination}: {google_result['distance_km']} km, {google_result['duration_text']}")
+        logger.info(
+            f"Google Maps OK for {origin} -> {destination}: "
+            f"{google_result['distance_km']} km, {google_result['duration_text']}"
+        )
         # Save to MongoDB cache for future lookups
         try:
             await db.distances.update_one(
@@ -114,7 +125,7 @@ async def get_distance_from_google(origin: str, destination: str) -> DistanceRes
                     "distance_km": google_result["distance_km"],
                     "duration_text": google_result["duration_text"],
                     "source": "google_maps",
-                    "fetched_at": datetime.now(timezone.utc).isoformat()
+                    "fetched_at": datetime.now(UTC).isoformat()
                 }},
                 upsert=True
             )

@@ -1,6 +1,6 @@
 import logging
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from fastapi import APIRouter, HTTPException, Request
 
@@ -32,7 +32,11 @@ async def get_quotation(request: Request, req: QuotationRequest):
         distance_result = await get_distance_from_google(req.from_location, req.to_location)
         if distance_result["status"] not in ["OK", "CACHED", "FALLBACK"]:
             logger.warning(f"Google Maps API returned {distance_result['status']}, using fallback")
-            distance_result = {"distance_km": 250.0, "duration_text": "~5 hours (estimated)", "status": "FALLBACK"}
+            distance_result = {
+                "distance_km": 250.0,
+                "duration_text": "~5 hours (estimated)",
+                "status": "FALLBACK",
+            }
         distance_km = distance_result["distance_km"]
         duration_text = distance_result.get("duration_text", "")
     pricing = vehicle["pricing"]
@@ -79,7 +83,7 @@ async def get_quotation(request: Request, req: QuotationRequest):
         "customer_phone": req.customer_phone,
         "customer_email": req.customer_email,
         "status": "quoted",
-        "created_at": datetime.now(timezone.utc).isoformat()
+        "created_at": datetime.now(UTC).isoformat()
     }
 
     # Save to MongoDB

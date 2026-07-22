@@ -20,7 +20,7 @@ COMMON_ROUTES = {
     ("bangalore", "vijayawada"): 660, ("bangalore", "hubli"): 420,
     ("bangalore", "belgaum"): 500, ("bangalore", "shimoga"): 300,
     ("bangalore", "hassan"): 190, ("bangalore", "chikmagalur"): 250,
-    ("bangalore", "nandi hills"): 60, ("bangalore", "pondicherry"): 310,
+    ("bangalore", "nandi hills"): 60,
     ("bengaluru", "mysore"): 150, ("bengaluru", "mysuru"): 150,
     ("bengaluru", "chennai"): 350, ("bengaluru", "rajasthan"): 1850,
     ("bengaluru", "jaipur"): 1850, ("bengaluru", "delhi"): 2150,
