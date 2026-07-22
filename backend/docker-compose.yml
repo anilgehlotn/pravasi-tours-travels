@@ -1,19 +1,13 @@
-version: '3.8'
-
 services:
-  backend:
+  api:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: pravasi-backend
     ports:
       - "8000:8000"
-    environment:
-      MONGO_URL: ${MONGO_URL}
-      DB_NAME: ${DB_NAME}
-      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
-      API_KEY: ${API_KEY}
-      CORS_ORIGINS: ${CORS_ORIGINS:-*}
+    env_file:
+      - .env
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/').read()"]
@@ -23,16 +17,25 @@ services:
       start_period: 40s
     networks:
       - pravasi-network
-    # Optional: Volume for logs
     volumes:
-      - ./logs:/app/logs
+      - logs:/app/logs
+
+  # Uncomment for local development without MongoDB Atlas.
+  # Point MONGO_URL at mongodb://mongo:27017/ when using this service.
+  # mongo:
+  #   image: mongo:7
+  #   container_name: pravasi-mongo
+  #   ports:
+  #     - "27017:27017"
+  #   volumes:
+  #     - mongo-data:/data/db
+  #   networks:
+  #     - pravasi-network
 
 networks:
   pravasi-network:
     driver: bridge
 
-# To use:
-# 1. Create .env.docker file with environment variables
-# 2. docker-compose --env-file .env.docker up -d
-# 3. Check logs: docker-compose logs -f backend
-# 4. Stop: docker-compose down
+volumes:
+  logs:
+  # mongo-data:
