@@ -149,15 +149,19 @@ python -c "from slowapi import Limiter; print('slowapi ok')"
 
 ## API endpoints
 
-| Method | Path | Auth |
+| Method | Path | Notes |
 |---|---|---|
-| GET | `/api/` | none |
-| GET | `/api/vehicles` | none |
-| GET | `/api/vehicles/{id}` | none |
-| POST | `/api/getQuotation` | none, rate limited (10/min) |
-| GET | `/api/quotations/{id}` | none |
-| POST | `/api/callback` | none |
-| POST | `/api/bookings` | `X-API-Key` |
+| GET | `/api/` | |
+| GET | `/api/vehicles` | |
+| GET | `/api/vehicles/{id}` | |
+| POST | `/api/getQuotation` | rate limited, 10/min |
+| GET | `/api/quotations/{id}` | |
+| POST | `/api/callback` | |
+| POST | `/api/bookings` | |
+
+No endpoint currently enforces `X-API-Key` authentication. An
+`verify_api_key_header` dependency exists in `auth.py` but is not wired to any
+route — treat all endpoints above as public until that is addressed.
 
 ## Final verification
 
