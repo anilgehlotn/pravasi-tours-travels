@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, ArrowRight, MapPin } from "lucide-react";
+import { ArrowLeft, Search, ArrowRight, MapPin } from "lucide-react";
 import { STATES, CITIES, getCitiesByState, getStateBySlug } from "@/data/destinations";
 
 const QUICK_PICKS = [
@@ -36,6 +36,15 @@ export default function ExplorePage() {
       {/* Section 1 — Hero + Search */}
       <section className="bg-[#F8FAFC] pt-24 sm:pt-28 pb-20 px-6 md:px-12 lg:px-20">
         <div className="max-w-7xl mx-auto text-center">
+          <Link
+            to="/"
+            data-testid="back-to-home"
+            className="inline-flex items-center gap-2 text-sm font-medium text-[#64748B] hover:text-[#1E3A8A] transition-all group mb-6"
+          >
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            Back to Home
+          </Link>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
