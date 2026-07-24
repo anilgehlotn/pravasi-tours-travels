@@ -1,7 +1,6 @@
 import { useState, useEffect, Suspense, lazy } from "react";
 import axios from "axios";
 import HeroSection from "@/components/HeroSection";
-import WhyChooseUs from "@/components/WhyChooseUs";
 import VehicleGrid from "@/components/VehicleGrid";
 
 // Lazy load below-the-fold components
@@ -48,7 +47,6 @@ export default function HomePage() {
   return (
     <main data-testid="home-page">
       <HeroSection vehicles={vehicles} />
-      <WhyChooseUs />
       <VehicleGrid />
       
       {/* Lazy load below-the-fold sections */}
