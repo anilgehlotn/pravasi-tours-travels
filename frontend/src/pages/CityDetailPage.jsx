@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useParams, Navigate } from "react-router-dom";
+import { useParams, Navigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Map, Sparkles, Clock, BookOpen, Bookmark, MessageCircle, Phone } from "lucide-react";
+import { ArrowLeft, MapPin, Map, Sparkles, Clock, BookOpen, Bookmark, MessageCircle, Phone } from "lucide-react";
 import { getCityBySlug, getStateBySlug, CATEGORIES } from "@/data/destinations";
 
 const WHATSAPP_NUMBER = "919845592920";
@@ -42,6 +42,15 @@ export default function CityDetailPage() {
           transition={{ duration: 0.6 }}
           className="max-w-7xl mx-auto"
         >
+          <Link
+            to="/explore"
+            data-testid="back-to-explore"
+            className="inline-flex items-center gap-2 text-sm font-medium text-[#64748B] hover:text-[#1E3A8A] transition-all group mb-6"
+          >
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            Back to Explore
+          </Link>
+
           <div className="flex items-center gap-2 text-sm mb-6">
             <div className="flex items-center gap-1.5 rounded-full bg-white ring-1 ring-gray-200 px-4 py-1.5">
               <MapPin className="w-3.5 h-3.5 text-[#F59E0B]" />
