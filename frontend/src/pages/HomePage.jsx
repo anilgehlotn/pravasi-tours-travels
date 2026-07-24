@@ -47,15 +47,16 @@ export default function HomePage() {
   return (
     <main data-testid="home-page">
       <HeroSection vehicles={vehicles} />
-      <VehicleGrid />
-      
-      {/* Lazy load below-the-fold sections */}
-      <Suspense fallback={<SectionLoader />}>
-        <PopularDestinations />
-      </Suspense>
 
       <Suspense fallback={<SectionLoader />}>
         <ExploreSouthIndiaTeaser />
+      </Suspense>
+
+      <VehicleGrid />
+
+      {/* Lazy load below-the-fold sections */}
+      <Suspense fallback={<SectionLoader />}>
+        <PopularDestinations />
       </Suspense>
 
       <Suspense fallback={<SectionLoader />}>
