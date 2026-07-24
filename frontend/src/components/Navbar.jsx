@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Phone, Car } from "lucide-react";
+import { Menu, X, LogIn, Car } from "lucide-react";
 import logo from '../assets/logo.png';
 
 
@@ -108,16 +108,18 @@ export default function Navbar() {
           {/* CTA + Mobile Toggle */}
           <div className="flex items-center gap-2 sm:gap-4">
             <a
-              href="tel:+919845592920"
-              data-testid="nav-call-btn"
+              href="https://pravasi-tours-travels-1xdh.vercel.app/dashboard"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-testid="nav-login-btn"
               className={`hidden md:flex items-center gap-2 rounded-full px-5 lg:px-6 py-2.5 text-sm font-semibold transition-all duration-300 ${
                 scrolled
                   ? "bg-[#1E3A8A] text-white hover:bg-[#1E3A8A]/90 shadow-lg shadow-[#1E3A8A]/20"
                   : "bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 border border-white/20"
               }`}
             >
-              <Phone className="w-4 h-4" />
-              Call Now
+              <LogIn className="w-4 h-4" />
+              Login
             </a>
             <button
               data-testid="mobile-menu-btn"
@@ -152,11 +154,13 @@ export default function Navbar() {
                 </button>
               ))}
               <a
-                href="tel:+919845592920"
+                href="https://pravasi-tours-travels-1xdh.vercel.app/dashboard"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 bg-[#1E3A8A] text-white rounded-full px-6 py-3 text-sm font-semibold mt-4"
               >
-                <Phone className="w-4 h-4" />
-                Call Now
+                <LogIn className="w-4 h-4" />
+                Login
               </a>
             </div>
           </motion.div>
