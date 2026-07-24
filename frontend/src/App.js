@@ -10,6 +10,8 @@ import HomePage from "@/pages/HomePage";
 // Lazy load pages not required on initial load
 const VehicleDetailPage = lazy(() => import("@/pages/VehicleDetailPage"));
 const QuoteResultPage = lazy(() => import("@/pages/QuoteResultPage"));
+const ExplorePage = lazy(() => import("@/pages/ExplorePage"));
+const CityDetailPage = lazy(() => import("@/pages/CityDetailPage"));
 
 // Loading fallback component
 function PageLoader() {
@@ -47,13 +49,29 @@ function App() {
               </Suspense>
             } 
           />
-          <Route 
-            path="/quote/:quoteId" 
+          <Route
+            path="/quote/:quoteId"
             element={
               <Suspense fallback={<PageLoader />}>
                 <QuoteResultPage />
               </Suspense>
-            } 
+            }
+          />
+          <Route
+            path="/explore"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <ExplorePage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/explore/:citySlug"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <CityDetailPage />
+              </Suspense>
+            }
           />
         </Routes>
         <Footer />
