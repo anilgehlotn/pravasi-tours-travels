@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, LogIn, Car } from "lucide-react";
 import logo from '../assets/logo.png';
@@ -10,12 +10,14 @@ const navLinks = [
   { label: "How It Works", href: "/#how-it-works" },
   { label: "Destinations", href: "/#destinations" },
   { label: "Contact", href: "/#callback" },
+  { label: "Explore", href: "/explore" },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30);
@@ -29,6 +31,10 @@ export default function Navbar() {
 
   const handleNavClick = (href) => {
     setMobileOpen(false);
+    if (href.startsWith("/") && !href.startsWith("/#")) {
+      navigate(href);
+      return;
+    }
     if (href.startsWith("/#")) {
       const id = href.replace("/#", "");
       if (location.pathname === "/") {

@@ -1,11 +1,11 @@
 import { useState, useEffect, Suspense, lazy } from "react";
 import axios from "axios";
 import HeroSection from "@/components/HeroSection";
-import WhyChooseUs from "@/components/WhyChooseUs";
 import VehicleGrid from "@/components/VehicleGrid";
 
 // Lazy load below-the-fold components
 const PopularDestinations = lazy(() => import("@/components/PopularDestinations"));
+const ExploreSouthIndiaTeaser = lazy(() => import("@/components/ExploreSouthIndiaTeaser"));
 const HowItWorks = lazy(() => import("@/components/HowItWorks"));
 const CallbackForm = lazy(() => import("@/components/CallbackForm"));
 const Testimonials = lazy(() => import("@/components/Testimonials"));
@@ -47,14 +47,18 @@ export default function HomePage() {
   return (
     <main data-testid="home-page">
       <HeroSection vehicles={vehicles} />
-      <WhyChooseUs />
+
+      <Suspense fallback={<SectionLoader />}>
+        <ExploreSouthIndiaTeaser />
+      </Suspense>
+
       <VehicleGrid />
-      
+
       {/* Lazy load below-the-fold sections */}
       <Suspense fallback={<SectionLoader />}>
         <PopularDestinations />
       </Suspense>
-      
+
       <Suspense fallback={<SectionLoader />}>
         <HowItWorks />
       </Suspense>
