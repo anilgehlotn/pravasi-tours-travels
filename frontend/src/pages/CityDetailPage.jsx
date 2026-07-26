@@ -3,6 +3,7 @@ import { useParams, Navigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, MapPin, Map, Sparkles, Clock, BookOpen, Bookmark, MessageCircle, Phone } from "lucide-react";
 import { getCityBySlug, getStateBySlug, CATEGORIES } from "@/data/destinations";
+import PlaceDetailModal from "@/components/PlaceDetailModal";
 
 const WHATSAPP_NUMBER = "919845592920";
 
@@ -20,6 +21,7 @@ export default function CityDetailPage() {
   const { citySlug } = useParams();
   const city = getCityBySlug(citySlug);
   const [activeCategory, setActiveCategory] = useState("All");
+  const [activePlace, setActivePlace] = useState(null);
 
   if (!city) return <Navigate to="/explore" replace />;
 
@@ -192,6 +194,7 @@ export default function CityDetailPage() {
                     <div className="flex gap-2">
                       <button
                         type="button"
+                        onClick={() => setActivePlace(place)}
                         data-testid={`learn-more-${slugify(place.name)}`}
                         className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold text-[#1E3A8A] bg-[#1E3A8A]/5 hover:bg-[#1E3A8A] hover:text-white transition-all"
                       >
@@ -276,6 +279,8 @@ export default function CityDetailPage() {
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
+
+      <PlaceDetailModal place={activePlace} city={city} onClose={() => setActivePlace(null)} />
     </div>
   );
 }
