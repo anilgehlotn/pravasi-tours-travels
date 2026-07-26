@@ -133,7 +133,7 @@ export const CITIES = [
         duration: "1.5 hours",
         slug: "iskcon-temple",
         gallery: [
-          "https://images.unsplash.com/photo-1600100397608-f0f2e0c6f0f1?w=1200&q=80",
+          "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=1200&q=80",
           "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1200&q=80",
         ],
         longDescription: "The ISKCON Temple in Bangalore, formally known as Sri Radha Krishna Temple, was completed in 1997 and sits atop Hare Krishna Hill in Rajajinagar. It is one of the largest and most-visited ISKCON temples in the world, built with a mix of modern architecture, traditional temple elements, and a soaring golden dome-and-tower complex.\n\nThe temple complex includes multiple shrines, a museum on Vedic culture, a planetarium-style exhibit, and a large hall for the evening aarti, which draws large crowds of devotees and visitors daily.\n\nBeyond worship, the temple is known for its prasadam (blessed food) counter and the Govinda's restaurant nearby, both popular even with visitors who come primarily for the architecture and the hilltop views over the city.",
@@ -158,7 +158,7 @@ export const CITIES = [
         slug: "commercial-street",
         gallery: [
           "https://images.unsplash.com/photo-1519817650390-64a93db51149?w=1200&q=80",
-          "https://images.unsplash.com/photo-1533044358957-4f6d09ae1e0d?w=1200&q=80",
+          "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=1200&q=80",
         ],
         longDescription: "Commercial Street is one of Bangalore's oldest and busiest shopping streets, dating back to the British cantonment era in the 19th century, when it served the needs of British soldiers and residents stationed nearby. Today it's a dense grid of narrow lanes packed with shops selling clothing, fabrics, footwear, jewellery and accessories.\n\nThe street is especially known for its bargain-friendly fashion stores, gold and silver jewellery shops, and a scattering of decades-old bookstores and tailoring shops that have survived the area's transformation into a modern shopping hub.\n\nIn the evenings, the street comes alive with street food vendors selling everything from roasted corn to Bangalore's famous filter coffee, making it as much a food-and-people-watching destination as a shopping one.",
         timings: "10:00 AM - 9:00 PM (most shops; some open later for street food)",
