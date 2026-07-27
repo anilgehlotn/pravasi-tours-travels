@@ -13,6 +13,25 @@ service that generates distance-based price quotations and handles bookings,
 paired with a web frontend — plus a separate ERP subproject for internal
 operations (drivers, vehicles, B2B billing, and an admin dashboard).
 
+## Explore South India
+
+The frontend includes an interactive city guide covering 5 states, 15
+cities, and 90 handpicked places across the region. Users pick a state,
+browse cities in a horizontal carousel, and open any city to see filterable
+places with photos, timings, entry fees, keywords, tips, and an embedded
+Google Map. Each place opens in a modal with a WhatsApp CTA to request a cab
+quote for that specific destination.
+
+- `/explore` — state and city picker (hero, search, state chips, city
+  carousel)
+- `/explore/:citySlug` — city detail with places grid, category filters,
+  and a per-place modal
+- A homepage teaser (`ExploreSouthIndiaTeaser`) sits between the hero and
+  the vehicle grid, and is also linked from the navbar's "Explore" entry
+
+Some place gallery images are representative Unsplash photos rather than
+photographs of the exact locations.
+
 ## Repository structure
 
 ```
