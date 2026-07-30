@@ -4,6 +4,7 @@ import HeroSection from "@/components/HeroSection";
 import VehicleGrid from "@/components/VehicleGrid";
 
 // Lazy load below-the-fold components
+const FleetSection = lazy(() => import("@/components/FleetSection"));
 const PopularDestinations = lazy(() => import("@/components/PopularDestinations"));
 const ExploreSouthIndiaTeaser = lazy(() => import("@/components/ExploreSouthIndiaTeaser"));
 const HowItWorks = lazy(() => import("@/components/HowItWorks"));
@@ -55,6 +56,10 @@ export default function HomePage() {
       <VehicleGrid />
 
       {/* Lazy load below-the-fold sections */}
+      <Suspense fallback={<SectionLoader />}>
+        <FleetSection />
+      </Suspense>
+
       <Suspense fallback={<SectionLoader />}>
         <PopularDestinations />
       </Suspense>

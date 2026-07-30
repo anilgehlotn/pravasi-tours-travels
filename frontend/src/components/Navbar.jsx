@@ -7,6 +7,7 @@ import logo from '../assets/logo.png';
 
 const navLinks = [
   { label: "Vehicles", href: "/#vehicles" },
+  { label: "Fleet", href: "/#fleet" },
   { label: "How It Works", href: "/#how-it-works" },
   { label: "Destinations", href: "/#destinations" },
   { label: "Contact", href: "/#callback" },
