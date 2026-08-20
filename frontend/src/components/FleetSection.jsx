@@ -41,13 +41,6 @@ export default function FleetSection() {
                 </div>
 
                 <div className="mt-auto">
-                  <div>
-                    <p className="text-xs text-slate-500">Price per day</p>
-                    <p className="text-lg font-semibold text-[#1E3A8A]">
-                      ₹{car.pricePerDay.toLocaleString("en-IN")}
-                    </p>
-                  </div>
-
                   <div className="flex gap-2 mt-3">
                     <button
                       type="button"
@@ -61,7 +54,7 @@ export default function FleetSection() {
                     </button>
                     <a
                       href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-                        `Hi Pravasi Tours & Travels, I'd like to book the ${car.name} (₹${car.pricePerDay.toLocaleString("en-IN")}/day). Please share availability and next steps.`
+                        `Hi Pravasi Tours & Travels, I'd like to book the ${car.name}. Please share availability and next steps.`
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
