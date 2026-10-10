@@ -162,7 +162,7 @@ export default function CityDetailPage() {
                   <div className="relative overflow-hidden aspect-[4/3]">
                     <img
                       src={place.image}
-                      alt={place.name}
+                      alt={`${place.name}, ${city.name}`}
                       loading="lazy"
                       decoding="async"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

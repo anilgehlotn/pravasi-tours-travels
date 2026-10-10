@@ -20,7 +20,10 @@ export default function PlaceDetailModal({ place, city, onClose }) {
     };
   }, [place, onClose]);
 
-  const images = place ? (place.gallery && place.gallery.length > 0 ? place.gallery : [place.image]) : [];
+  const hasGallery = place && place.gallery && place.gallery.length > 0;
+  const images = place ? (hasGallery ? place.gallery : [place.image]) : [];
+  const credits = place ? (hasGallery ? place.galleryCredits : [place.imageCredit]) || [] : [];
+  const creditLine = [...new Set(credits.filter(Boolean).map((c) => `${c.author} / ${c.license}`))].join("; ");
   const mapQuery = place ? place.mapQuery || place.name : "";
   const whatsappMessage = place
     ? `Hi Pravasi Tours, I'm planning to visit ${place.name} in ${city.name} and I'd like a cab with driver. Please share your best quote. Thanks!`
@@ -72,7 +75,7 @@ export default function PlaceDetailModal({ place, city, onClose }) {
               <div className="aspect-[16/9] rounded-t-3xl overflow-hidden">
                 <img
                   src={images[0]}
-                  alt={place.name}
+                  alt={`${place.name}, ${city.name}`}
                   loading="lazy"
                   decoding="async"
                   className="w-full h-full object-cover"
@@ -85,7 +88,7 @@ export default function PlaceDetailModal({ place, city, onClose }) {
                   <div key={i} className="aspect-[4/3] overflow-hidden rounded-2xl">
                     <img
                       src={src}
-                      alt={place.name}
+                      alt={`${place.name}, ${city.name} — photo ${i + 1}`}
                       loading="lazy"
                       decoding="async"
                       className="w-full h-full object-cover rounded-2xl"
@@ -99,7 +102,7 @@ export default function PlaceDetailModal({ place, city, onClose }) {
                 <div className="col-span-2 row-span-2 aspect-square overflow-hidden rounded-2xl">
                   <img
                     src={images[0]}
-                    alt={place.name}
+                    alt={`${place.name}, ${city.name} — photo 1`}
                     loading="lazy"
                     decoding="async"
                     className="w-full h-full object-cover rounded-2xl"
@@ -109,7 +112,7 @@ export default function PlaceDetailModal({ place, city, onClose }) {
                   <div key={i} className="aspect-square overflow-hidden rounded-2xl">
                     <img
                       src={src}
-                      alt={place.name}
+                      alt={`${place.name}, ${city.name} — photo ${i + 2}`}
                       loading="lazy"
                       decoding="async"
                       className="w-full h-full object-cover rounded-2xl"
@@ -117,6 +120,11 @@ export default function PlaceDetailModal({ place, city, onClose }) {
                   </div>
                 ))}
               </div>
+            )}
+            {creditLine && (
+              <p className="px-4 pt-1 text-[11px] leading-snug text-[#94A3B8]" data-testid="place-modal-credit">
+                Photos: {creditLine}, via Wikimedia Commons
+              </p>
             )}
 
             {/* Section 2 — Header */}

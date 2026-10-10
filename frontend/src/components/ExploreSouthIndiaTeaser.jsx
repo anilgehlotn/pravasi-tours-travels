@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { getCityBySlug } from "@/data/destinations";
+import { CITIES, STATES, getCityBySlug, getStateBySlug } from "@/data/destinations";
 
 const COLLAGE_SLUGS = ["coorg", "munnar", "hyderabad", "pondicherry"];
 
+const PLACE_COUNT = CITIES.reduce((sum, city) => sum + city.places.length, 0);
+
 const STATS = [
-  { value: "5", label: "States covered" },
-  { value: "15", label: "Cities" },
-  { value: "90+", label: "Places to explore" },
+  { value: String(STATES.length), label: "States covered" },
+  { value: String(CITIES.length), label: "Cities" },
+  { value: String(PLACE_COUNT), label: "Places to explore" },
 ];
 
 export default function ExploreSouthIndiaTeaser() {
@@ -88,7 +90,9 @@ export default function ExploreSouthIndiaTeaser() {
             >
               <img
                 src={city.heroImage}
-                alt={city.name}
+                alt={`${city.name}, ${getStateBySlug(city.stateSlug)?.name}`}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
