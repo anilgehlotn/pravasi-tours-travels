@@ -139,10 +139,10 @@ VEHICLES_DATA = [
         "category": "van",
         "seats": 12,
         "ac": True,
-        "image": "https://res.cloudinary.com/hioiaexf/image/upload/v1782894086/WhatsApp_Image_2026-07-01_at_1.51.04_PM_dgwszn.jpg",
+        "image": "https://res.cloudinary.com/dqp0pkern/image/upload/v1791630231/WhatsApp_Image_2026-10-10_at_4.32.36_PM_d2cvxa.jpg",
         "images": [
+            "https://res.cloudinary.com/dqp0pkern/image/upload/v1791630231/WhatsApp_Image_2026-10-10_at_4.32.36_PM_d2cvxa.jpg",
             "https://res.cloudinary.com/hioiaexf/image/upload/v1782894086/WhatsApp_Image_2026-07-01_at_1.51.04_PM_dgwszn.jpg",
-            "https://res.cloudinary.com/hioiaexf/image/upload/v1782894058/WhatsApp_Image_2026-07-01_at_1.50.06_PM_eowybx.jpg",
             "https://res.cloudinary.com/hioiaexf/image/upload/v1782893909/WhatsApp_Image_2026-07-01_at_1.47.10_PM_kt4seb.jpg"
         ],
         "description": "Air-conditioned Tempo Traveller for comfortable group travel. Ideal for pilgrimages and tours.",
@@ -375,12 +375,12 @@ VEHICLES_DATA = [
         "description": "49 Seater Sleeper Coach for overnight long-distance travel. Individual berths for a restful journey.",
         "features": ["Air Conditioned", "49 Sleeper Berths", "Individual Curtains", "Blanket & Pillow", "USB Charging"],
         "pricing": {
-            "local_8hrs_80km": 20000,
-            "extra_km": 70,
-            "extra_hr": 1100,
-            "outstation_km": 65,
+            "local_8hrs_80km": 12000,
+            "extra_km": 50,
+            "extra_hr": 1000,
+            "outstation_km": 52,
             "min_km": 300,
-            "driver_bata": 1500
+            "driver_bata": 1000
         }
     }
 ]
